@@ -1,0 +1,7 @@
+**/__pycache__
+.idea/
+.venv/
+allure-results/
+docs/
+driver/
+config/
