@@ -16,7 +16,7 @@ class MainPage(BasePage):
         self.timeout = 15
 
     def get_title(self) -> str:
-        """Получение загаловка страницы"""
+        """Получение заголовка страницы"""
         with allure.step('Получение заголовка страницы'):
             self.wait_visibility_of_element_located(self._icon_locator)
             return self.driver.title
@@ -24,12 +24,12 @@ class MainPage(BasePage):
     def open_account_options(self) -> None:
         """Открытие меню 'My account'"""
         with allure.step('Открытие меню "My account"'):
-            self.wait_visibility_of_element_located(self._my_account_dropdown_locator).click()
+            self.do_click(self._my_account_dropdown_locator)
             self.wait_visibility_of_element_located(self._register_dropdown_option_locator)
 
     def select_login(self) -> None:
         """Выбор 'Login' в выпадающем меню"""
         with allure.step('Выбор "Login" в выпадающем меню'):
             url = self.driver.current_url
-            self.wait_visibility_of_element_located(self._login_dropdown_option_locator).click()
+            self.do_click(self._login_dropdown_option_locator)
             self.wait_url_changes(url)

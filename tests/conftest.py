@@ -8,15 +8,15 @@ from library.pages.login_page import LoginPage
 from library.pages.account_page import AccountPage
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope='module')
 @allure.title('Инициализация веб драйвера')
-def driver(request):
+def driver():
     _driver = webdriver.Chrome()
     yield _driver
     _driver.quit()
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope='module')
 @allure.title('Открытие главной страницы')
 def main_page(driver):
     # TODO: передача URL
@@ -24,13 +24,13 @@ def main_page(driver):
     yield MainPage(driver)
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope='module')
 @allure.title('Открытие главной страницы')
 def account_page(driver):
     yield AccountPage(driver)
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope='module')
 @allure.title('Переход на страницу логина')
 def login_page(main_page, driver):
     main_page.open_account_options()

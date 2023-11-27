@@ -1,5 +1,4 @@
 import allure
-import pytest
 
 
 def assert_strings_equal(value1: str, value2: str, msg: str = '') -> None:

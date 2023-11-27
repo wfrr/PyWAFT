@@ -15,10 +15,8 @@ class LoginPage(BasePage):
         
         :param str login: логин пользователя
         """
-        with allure.step(f'Заполнение поля "E-Mail Address" {login}'):
-            field = self.wait_element_to_be_clickable(self._login_field_locator)
-            field.clear()
-            field.send_keys(login)
+        with allure.step(f'Заполнение поля "E-Mail Address" текстом: {login}'):
+            self.do_send_keys(self._login_field_locator, login)
 
     def fill_password(self, passwd: str) -> None:
         """
@@ -26,14 +24,12 @@ class LoginPage(BasePage):
         
         :param str passwd: пароль пользователя
         """
-        with allure.step('Заполнение поля "E-Mail Address"'):
-            field = self.wait_element_to_be_clickable(self._password_field_locator)
-            field.clear()
-            field.send_keys(passwd)
+        with allure.step('Заполнение поля "Password"'):
+            self.do_send_keys_no_log(self._password_field_locator, passwd)
 
     def do_login(self) -> None:
         """Нажатие кнопки 'Login'"""
         with allure.step('Нажатие кнопки "Login"'):
             url = self.driver.current_url
-            self.wait_element_to_be_clickable(self._login_btn_locator).click()
+            self.do_click(self._login_btn_locator)
             self.wait_url_changes(url)
