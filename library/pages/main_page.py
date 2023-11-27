@@ -10,11 +10,10 @@ class MainPage(BasePage):
     _register_dropdown_option_locator = (By.CSS_SELECTOR, '.nav.float-end .dropdown-menu li:nth-child(1) a')
     _login_dropdown_option_locator = (By.CSS_SELECTOR, '.nav.float-end .dropdown-menu li:nth-child(2) a')
     
-    def __init__(self, driver, url):
+    def __init__(self, driver):
         super().__init__(driver)
         self.driver = driver
         self.timeout = 15
-        self.driver.get(url)
 
     def get_title(self) -> str:
         """Получение загаловка страницы"""

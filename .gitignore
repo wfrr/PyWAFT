@@ -1,6 +1,7 @@
 **/__pycache__
 .idea/
 .venv/
+.pytest_cache
 allure-results/
 docs/
 driver/
