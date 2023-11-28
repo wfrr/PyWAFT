@@ -1,4 +1,7 @@
+from typing import Union
+
 import allure
+from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
 
@@ -10,7 +13,7 @@ class MainPage(BasePage):
     _register_dropdown_option_locator = (By.CSS_SELECTOR, '.nav.float-end .dropdown-menu li:nth-child(1) a')
     _login_dropdown_option_locator = (By.CSS_SELECTOR, '.nav.float-end .dropdown-menu li:nth-child(2) a')
     
-    def __init__(self, driver):
+    def __init__(self, driver: Union[WebDriver]):
         super().__init__(driver)
         self.driver = driver
         self.timeout = 15

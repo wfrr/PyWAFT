@@ -1,11 +1,15 @@
 import allure
 
 from config.config import TestData
+
+from library.pages.account_page import AccountPage
+from library.pages.login_page import LoginPage
 from library.test_utils.base import assert_strings_equal
 
 
+@allure.tag('login')
 @allure.title('Проверка входа в личный кабинет обычным пользователем')
-def test_user_logon(login_page, account_page):
+def test_user_logon(login_page: LoginPage, account_page: AccountPage) -> None:
     # TODO: загрузка тестовых данных
     login_page.fill_login(TestData.CUSTOMER_EMAIL)
     login_page.fill_password(TestData.CUSTOMER_PASSWORD)

@@ -1,4 +1,7 @@
+from typing import Union
+
 import allure
+from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
 
@@ -6,6 +9,11 @@ from .base_page import BasePage
 class AccountPage(BasePage):
 
     _icon_locator = (By.ID, 'logo')
+
+    def __init__(self, driver: Union[WebDriver]):
+        super().__init__(driver)
+        self.driver = driver
+        self.timeout = 15
 
     def get_title(self) -> str:
         """Получение заголовка страницы"""

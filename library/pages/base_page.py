@@ -1,3 +1,5 @@
+from typing import Optional, Tuple
+
 import allure
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -10,20 +12,20 @@ class BasePage:
         self.driver = driver
         self.timeout = 10
 
-    def do_click(self, locator: [str, str]) -> None:
+    def do_click(self, locator: Tuple[str, str]) -> None:
         """
         Нажатие на элемент
 
-        :param [str, str] locator: локатор элемента
+        :param Tuple[str, str] locator: локатор элемента
         """
         with allure.step(f'Нажатие на элемент по локатору {locator}'):
             self.wait_element_to_be_clickable(locator=locator).click()
 
-    def do_send_keys(self, locator: [str, str], text: str) -> None:
+    def do_send_keys(self, locator: Tuple[str, str], text: str) -> None:
         """
         Отправка последовательности символов в элемент
 
-        :param [str, str] locator: локатор элемента
+        :param Tuple[str, str] locator: локатор элемента
         :param str text: текст для передачи в элемент
         """
         with allure.step(f'Отправка последовательности символов {text} в элемент по локатору {locator}'):
@@ -31,11 +33,11 @@ class BasePage:
             el.clear()
             el.send_keys(text)
 
-    def do_send_keys_no_log(self, locator: [str, str], text: str) -> None:
+    def do_send_keys_no_log(self, locator: Tuple[str, str], text: str) -> None:
         """
         Отправка последовательности символов в элемент без логирования текста
 
-        :param [str, str] locator: локатор элемента
+        :param Tuple[str, str] locator: локатор элемента
         :param str text: текст для передачи в элемент
         """
         with allure.step(f'Отправка последовательности символов в элемент по локатору {locator}'):
@@ -58,56 +60,49 @@ class BasePage:
             # TODO: скрипт для прокручивания вниз до конца страницы
             self.driver.execute_script('')
 
-    def get_element_text(self, locator: [str, str]) -> str:
+    def get_element_text(self, locator: Tuple[str, str]) -> str:
         """
         Получение текста элемента
 
-        :param [str, str] locator: локатор элемента
+        :param Tuple[str, str] locator: локатор элемента
         :returns str: текст элемента
         """
         with allure.step(f'Получение текста элемента по локатору {locator}'):
             return self.wait_visibility_of_element_located(locator=locator).text
 
-    def wait_visibility_of_element_located(self, locator: tuple[str, str], timeout: int | None = None) -> WebElement:
+    def wait_visibility_of_element_located(self, locator: Tuple[str, str], timeout: Optional[int] = None) -> WebElement:
         """
         Ожидание видимости элемента по локатору
 
-        :param [str, str] locator: локатор элемента
-        :param int timeout: время ожидания нахождения элемента
+        :param Tuple[str, str] locator: локатор элемента
+        :param Optional[int] timeout: время ожидания нахождения элемента
         :returns WebElement: найденный элемент
         """
         with allure.step(f'Ожидание видимости элемента по локатору {locator}'):
-            # TODO: обработка использования ignored_exceptions
-            ignored_exceptions = []
             timeout = timeout or self.timeout
-            return WebDriverWait(self.driver, timeout, ignored_exceptions=ignored_exceptions).until(
+            return WebDriverWait(self.driver, timeout, ignored_exceptions=[]).until(
                 ec.visibility_of_element_located(locator))
 
-    def wait_element_to_be_clickable(self, locator: tuple[str, str], timeout: int | None = None) -> WebElement:
+    def wait_element_to_be_clickable(self, locator: Tuple[str, str], timeout: Optional[int] = None) -> WebElement:
         """
         Ожидание видимости элемента по локатору
 
-        :param [str, str] locator: локатор элемента
-        :param int timeout: время ожидания нахождения элемента
+        :param Tuple[str, str] locator: локатор элемента
+        :param Optional[int] timeout: время ожидания нахождения элемента
         :returns WebElement: найденный элемент
         """
         with allure.step(f'Ожидание видимости элемента по локатору {locator}'):
-            # TODO: обработка использования ignored_exceptions
-            ignored_exceptions = []
             timeout = timeout or self.timeout
-            return WebDriverWait(self.driver, timeout, ignored_exceptions=ignored_exceptions).until(
-                ec.element_to_be_clickable(locator))
+            return WebDriverWait(self.driver, timeout, ignored_exceptions=[]).until(ec.element_to_be_clickable(locator))
 
-    def wait_url_changes(self, url: str, timeout: int | None = None) -> bool:
+    def wait_url_changes(self, url: str, timeout: Optional[int] = None) -> bool:
         """
         Ожидание изменения URL
 
-        :param [str, str] url: текущий url
-        :param int timeout: время ожидания нахождения элемента
+        :param str url: текущий url
+        :param Optional[int] timeout: время ожидания нахождения элемента
         :returns bool: булево значение, обозначающее результат изменения url
         """
         with allure.step('Ожидание изменения URL'):
-            # TODO: обработка использования ignored_exceptions
-            ignored_exceptions = []
             timeout = timeout or self.timeout
-            return WebDriverWait(self.driver, timeout, ignored_exceptions=ignored_exceptions).until(ec.url_changes(url))
+            return WebDriverWait(self.driver, timeout, ignored_exceptions=[]).until(ec.url_changes(url))
