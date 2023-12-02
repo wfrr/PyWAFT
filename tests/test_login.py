@@ -1,6 +1,7 @@
 from typing import Dict, Union
 
 import allure
+import pytest
 
 from library.pages.account_page import AccountPage
 from library.pages.login_page import LoginPage
@@ -9,6 +10,7 @@ from library.test_utils.base import assert_strings_equal
 
 @allure.tag('login')
 @allure.title('Проверка входа в личный кабинет обычным пользователем')
+@pytest.mark.login
 def test_user_logon(login_page: LoginPage, account_page: AccountPage,
                     variables: Dict[str, Union[str, Dict[str, Dict[str, str]]]]) -> None:
     login_page.fill_login(variables['users']['customer']['email'])

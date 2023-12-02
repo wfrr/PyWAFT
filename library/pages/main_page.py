@@ -12,7 +12,7 @@ class MainPage(BasePage):
     _my_account_dropdown_locator = (By.CSS_SELECTOR, '.nav.float-end .dropdown span')
     _register_dropdown_option_locator = (By.CSS_SELECTOR, '.nav.float-end .dropdown-menu li:nth-child(1) a')
     _login_dropdown_option_locator = (By.CSS_SELECTOR, '.nav.float-end .dropdown-menu li:nth-child(2) a')
-    
+
     def __init__(self, driver: Union[WebDriver]):
         super().__init__(driver)
         self.driver = driver

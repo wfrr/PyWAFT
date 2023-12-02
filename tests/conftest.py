@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 
+from library.pages.admin_login_page import AdminLoginPage
 from library.pages.main_page import MainPage
 from library.pages.login_page import LoginPage
 from library.pages.account_page import AccountPage
@@ -35,6 +36,15 @@ def main_page(
 @allure.title('Открытие главной страницы')
 def account_page(driver: webdriver) -> Generator[AccountPage, None, None]:
     yield AccountPage(driver)
+
+
+@pytest.fixture(scope='module')
+@allure.title('Открытие страницы входа администратора')
+def admin_login_page(
+        driver: WebDriver, variables: Dict[str, Union[str, Dict[str, Dict[str, str]]]]
+) -> Generator[AdminLoginPage, None, None]:
+    driver.get(variables['users']['admin']['url'])
+    yield AdminLoginPage(driver)
 
 
 @pytest.fixture(scope='module')
