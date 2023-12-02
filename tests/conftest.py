@@ -4,6 +4,7 @@ import allure
 import pytest
 
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 from library.pages.main_page import MainPage
@@ -14,9 +15,9 @@ from library.pages.account_page import AccountPage
 @pytest.fixture(scope='module')
 @allure.title('Инициализация веб драйвера')
 def driver(variables: Dict[str, Union[str, Dict[str, Dict[str, str]]]]) -> Generator[WebDriver, None, None]:
-    _driver = webdriver.Chrome()
-    # TODO: logging
-    print(f'Запуск теста на стенде: {variables["stand"]}')
+    options = Options()
+    options.browser_version = variables['capabilities']['browser_version']
+    _driver = webdriver.Chrome(options=options)
     yield _driver
     _driver.quit()
 
