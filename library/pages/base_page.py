@@ -60,15 +60,36 @@ class BasePage:
             # TODO: скрипт для прокручивания вниз до конца страницы
             self.driver.execute_script('')
 
-    def get_element_text(self, locator: Tuple[str, str]) -> str:
+    def get_element_text(self, locator: Tuple[str, str], is_attribute: Optional[bool] = False) -> str:
         """
         Получение текста элемента
 
         :param Tuple[str, str] locator: локатор элемента
+        :param Optional[bool] is_attribute: флаг получения текста из атрибута элемента
         :returns str: текст элемента
         """
         with allure.step(f'Получение текста элемента по локатору {locator}'):
-            return self.wait_visibility_of_element_located(locator=locator).text
+            el = self.wait_visibility_of_element_located(locator=locator)
+            if is_attribute:
+                return el.get_property('value')
+            return el.text
+
+    def get_all_elements_text(self, locator: Tuple[str, str], is_attribute: Optional[bool] = False) -> list[str]:
+        """
+        Получение текста всех элементов
+
+        :param Tuple[str, str] locator: локатор элемента
+        :param Optional[bool] is_attribute: флаг получения текста из атрибута элемента
+        :returns list: список текстов элементов
+        """
+        with allure.step(f'Получение текстов всех элементов по локатору {locator}'):
+            elements = []
+            for el in self.wait_visibility_of_all_elements_located(locator=locator):
+                if is_attribute:
+                    elements.append(el.get_property('value'))
+                    continue
+                elements.append(el.text)
+            return elements
 
     def wait_visibility_of_element_located(self, locator: Tuple[str, str], timeout: Optional[int] = None) -> WebElement:
         """
@@ -82,6 +103,21 @@ class BasePage:
             timeout = timeout or self.timeout
             return WebDriverWait(self.driver, timeout, ignored_exceptions=[]).until(
                 ec.visibility_of_element_located(locator))
+
+    def wait_visibility_of_all_elements_located(
+            self, locator: Tuple[str, str], timeout: Optional[int] = None
+    ) -> list[WebElement]:
+        """
+        Ожидание видимости всех элементов по локатору
+
+        :param Tuple[str, str] locator: локатор элемента
+        :param Optional[int] timeout: время ожидания нахождения элемента
+        :returns list: список найденных элементов
+        """
+        with allure.step(f'Ожидание видимости всех элементов по локатору {locator}'):
+            timeout = timeout or self.timeout
+            return WebDriverWait(self.driver, timeout, ignored_exceptions=[]).until(
+                ec.visibility_of_all_elements_located(locator))
 
     def wait_element_to_be_clickable(self, locator: Tuple[str, str], timeout: Optional[int] = None) -> WebElement:
         """
