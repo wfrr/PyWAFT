@@ -1,7 +1,10 @@
-from typing import Mapping, Union, Generator
+import platform
+from os import path
+from typing import Mapping, Union, Generator, Optional, Callable, Any
 
 import allure
 import pytest
+from _pytest.fixtures import SubRequest
 from selenium.webdriver.chrome.webdriver import WebDriver as ChromeWebDriver
 from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxWebDriver
 from selenium.webdriver.edge.webdriver import WebDriver as EdgeWebDriver
@@ -10,6 +13,28 @@ from sqlalchemy.orm import Session
 from library.database.connection import init_db_connection
 from library.selenium_wrapper import init_chrome, init_firefox, init_edge
 from library.utils import random_string
+
+
+ALLURE_ENVIRONMENT_PROPERTIES_FILE = 'environment.properties'
+ALLUREDIR_OPTION = '--alluredir'
+
+
+@pytest.fixture(scope='session', autouse=True)
+def add_allure_env_property(request: SubRequest) -> Optional[Callable]:
+    environment_properties = dict()
+
+    def maker(key: str, value: Any):
+        environment_properties.update({key: value})
+
+    yield maker
+
+    alluredir = request.config.getoption(ALLUREDIR_OPTION)
+    if not alluredir or not path.isdir(alluredir) or not environment_properties:
+        return
+    allure_env_path = path.join(alluredir, ALLURE_ENVIRONMENT_PROPERTIES_FILE)
+    with open(allure_env_path, 'w') as _f:
+        data = '\n'.join([f'{variable}={value}' for variable, value in environment_properties.items()])
+        _f.write(data)
 
 
 @pytest.fixture(scope='module')
@@ -36,6 +61,16 @@ def db_session(
         'db_name': variables['database']['db_name']
     }
     yield init_db_connection(db_conf)
+
+
+@pytest.fixture(scope='session', autouse=True)
+@allure.title('Запись переменных окружения')
+def environment(add_allure_env_property: Callable,
+                variables: Mapping[str, Union[str, Mapping[str, Mapping[str, Union[str, int]]]]]) -> None:
+    add_allure_env_property('ENV', variables['environment'])
+    add_allure_env_property('Browser', variables['capabilities']['browser'])
+    add_allure_env_property('Browser-version', variables['capabilities']['browser_version'])
+    add_allure_env_property('OS', platform.platform())
 
 
 @pytest.fixture(scope='module')
