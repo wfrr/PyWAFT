@@ -1,3 +1,5 @@
+"""Модуль главной страницы"""
+
 from typing import Union
 
 import allure
@@ -7,11 +9,15 @@ from .base_page import BasePage
 
 
 class MainPage(BasePage):
+    """Класс главной страницы"""
 
     _icon_locator = (By.ID, 'logo')
-    _my_account_dropdown_locator = (By.CSS_SELECTOR, '.nav.float-end .dropdown span')
-    _register_dropdown_option_locator = (By.CSS_SELECTOR, '.nav.float-end .dropdown-menu li:nth-child(1) a')
-    _login_dropdown_option_locator = (By.CSS_SELECTOR, '.nav.float-end .dropdown-menu li:nth-child(2) a')
+    _my_account_dropdown_locator = (
+        By.CSS_SELECTOR, '.nav.float-end .dropdown span')
+    _register_dropdown_option_locator = (
+        By.CSS_SELECTOR, '.nav.float-end .dropdown-menu li:nth-child(1) a')
+    _login_dropdown_option_locator = (
+        By.CSS_SELECTOR, '.nav.float-end .dropdown-menu li:nth-child(2) a')
 
     def __init__(self, driver: Union[WebDriver]):
         super().__init__(driver)
@@ -28,7 +34,8 @@ class MainPage(BasePage):
         """Открытие меню 'My account'"""
         with allure.step('Открытие меню "My account"'):
             self.do_click(self._my_account_dropdown_locator)
-            self.wait_visibility_of_element_located(self._register_dropdown_option_locator)
+            self.wait_visibility_of_element_located(
+                self._register_dropdown_option_locator)
 
     def select_login(self) -> None:
         """Выбор 'Login' в выпадающем меню"""

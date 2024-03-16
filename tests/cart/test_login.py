@@ -1,3 +1,5 @@
+"""Модуль тестов для проверки входа"""
+
 from typing import Mapping, Union
 
 import allure
@@ -6,8 +8,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver as ChromeWebDriver
 from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxWebDriver
 from selenium.webdriver.edge.webdriver import WebDriver as EdgeWebDriver
 
-from library.pages.account_page import AccountPage
-from library.pages.login_page import LoginPage
+from library.pages.cart import AccountPage, LoginPage
 from library.test_utils.base import assert_strings_equal
 
 
@@ -16,7 +17,9 @@ from library.test_utils.base import assert_strings_equal
 @pytest.mark.login
 def test_user_logon(driver: Union[ChromeWebDriver, FirefoxWebDriver, EdgeWebDriver], login_page: LoginPage,
                     variables: Mapping[str, Union[str, Mapping[str, Mapping[str, str]]]]) -> None:
+    """Тест проверки входа"""
     login_page.fill_login(variables['users']['customer']['email'])
     login_page.fill_password(variables['users']['customer']['password'])
     login_page.do_login()
-    assert_strings_equal(value1=AccountPage(driver).get_title(), value2='My Account', msg='Ошибка проверки входа')
+    assert_strings_equal(value1=AccountPage(driver).get_title(
+    ), value2='My Account', msg='Ошибка проверки входа')

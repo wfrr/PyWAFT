@@ -1,3 +1,5 @@
+"""Модуль тестов редактирования данных учетной записи"""
+
 from typing import Mapping, Union
 
 import allure
@@ -7,19 +9,21 @@ from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxWebDriver
 from selenium.webdriver.edge.webdriver import WebDriver as EdgeWebDriver
 from sqlalchemy.orm import Session
 
-from library.database.queries import select_customer_by_id
-from library.pages.account_page import AccountPage
-from library.pages.edit_account_page import EditAccountPage
+from library.database.cart import select_customer_by_id
+from library.pages.cart import EditAccountPage, AccountPage
 from library.test_utils.base import assert_strings_equal
+from library.test_utils.user_data import PersonInfo
 
 
 @allure.title('Проверка редактирования поля клиента')
 @pytest.mark.edit_account
 def test_edit_customer_account_data(
         db_session: Session, driver: Union[ChromeWebDriver, FirefoxWebDriver, EdgeWebDriver],
-        edit_customer_page: EditAccountPage, random_first_name: str, random_last_name: str,
-        variables: Mapping[str, Union[str, Mapping[str, Mapping[str, Union[str, int]]]]]
+        edit_customer_page: EditAccountPage, personal_info: PersonInfo,
+        variables: Mapping[str, Union[str,
+                                      Mapping[str, Mapping[str, Union[str, int]]]]]
 ) -> None:
+    """Тест редактирования учетной записи покупателя"""
     with allure.step('Проверка существующих данных клиента'):
         customer = select_customer_by_id(
             db_session, variables['users']['customer']['customer_id']
@@ -33,8 +37,8 @@ def test_edit_customer_account_data(
                              msg='Ошибка соответствия email клиента')
 
     with allure.step('Проверка обновления данных клиента'):
-        edit_customer_page.change_first_name(random_first_name)
-        edit_customer_page.change_last_name(random_last_name)
+        edit_customer_page.change_first_name(personal_info.first_name)
+        edit_customer_page.change_last_name(personal_info.last_name)
         edit_customer_page.save_changes()
         msg = AccountPage(driver).get_success_msg()
         assert_strings_equal(value1=msg, value2='Success: Your account has been successfully updated.',
@@ -42,9 +46,9 @@ def test_edit_customer_account_data(
         customer = select_customer_by_id(
             db_session, variables['users']['customer']['customer_id']
         )
-        assert_strings_equal(value1=customer['firstname'], value2=random_first_name,
+        assert_strings_equal(value1=customer['firstname'], value2=personal_info.first_name,
                              msg='Ошибка соответствия имени клиента после изменения')
-        assert_strings_equal(value1=customer['lastname'], value2=random_last_name,
+        assert_strings_equal(value1=customer['lastname'], value2=personal_info.last_name,
                              msg='Ошибка соответствия фамилии клиента после изменения')
         assert_strings_equal(value1=email, value2=customer['email'],
                              msg='Ошибка соответствия email клиента после изменения')

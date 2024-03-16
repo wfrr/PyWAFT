@@ -1,3 +1,5 @@
+"""Базовые вспомогательные места для тестов"""
+
 from typing import Optional
 
 import allure

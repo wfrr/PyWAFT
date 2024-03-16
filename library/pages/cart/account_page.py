@@ -1,3 +1,4 @@
+"""Модуль страницы Account"""
 from typing import Union
 
 import allure
@@ -7,9 +8,11 @@ from .base_page import BasePage
 
 
 class AccountPage(BasePage):
+    """Класс страницы Account"""
 
     _icon_locator = (By.ID, 'logo')
-    _edit_account_page_locator = (By.CSS_SELECTOR, '.list-group-item:nth-child(2)')
+    _edit_account_page_locator = (
+        By.CSS_SELECTOR, '.list-group-item:nth-child(2)')
     _success_msg_locator = (By.CLASS_NAME, 'alert-success')
     __cart_btn_locator = (By.CSS_SELECTOR, 'a[title="Shopping Cart"]')
 

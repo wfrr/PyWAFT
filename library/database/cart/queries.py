@@ -1,9 +1,11 @@
+"""Модуль методов запросов к БД OpenCart"""
+
 from typing import Mapping, Union
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from library.database.models import Cart, Customer, Product, ProductDescription
+from library.database.cart.models import Cart, Customer, Product, ProductDescription
 
 
 def select_customer_by_id(session: Session, customer_id: int) -> Mapping[str, Union[str, int]]:

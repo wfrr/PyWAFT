@@ -1,10 +1,13 @@
+"""Модуль страницы редактирования данных учетной записи"""
+
 import allure
 from selenium.webdriver.common.by import By
 
-from library.pages.base_page import BasePage
+from library.pages.cart.base_page import BasePage
 
 
 class EditAccountPage(BasePage):
+    """Класс страницы редактирования данных учетной записи"""
 
     _first_name_locator = (By.ID, 'input-firstname')
     _last_name_locator = (By.ID, 'input-lastname')

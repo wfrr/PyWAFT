@@ -1,3 +1,5 @@
+"""Модуль страницы входа"""
+
 from typing import Union
 
 import allure
@@ -7,9 +9,11 @@ from .base_page import BasePage
 
 
 class LoginPage(BasePage):
+    """Класс страницы входа"""
 
     _login_field_locator = (By.CSS_SELECTOR, '#form-login input[type=text]')
-    _password_field_locator = (By.CSS_SELECTOR, '#form-login input[type=password]')
+    _password_field_locator = (
+        By.CSS_SELECTOR, '#form-login input[type=password]')
     _login_btn_locator = (By.CSS_SELECTOR, '#form-login button[type=submit]')
 
     def __init__(self, driver: Union[WebDriver]):
@@ -20,7 +24,7 @@ class LoginPage(BasePage):
     def fill_login(self, login: str) -> None:
         """
         Заполнение поля 'E-Mail Address'
-        
+
         :param str login: логин пользователя
         """
         with allure.step(f'Заполнение поля "E-Mail Address" текстом: {login}'):
@@ -29,7 +33,7 @@ class LoginPage(BasePage):
     def fill_password(self, passwd: str) -> None:
         """
         Заполнение поля 'Password'
-        
+
         :param str passwd: пароль пользователя
         """
         with allure.step('Заполнение поля "Password"'):

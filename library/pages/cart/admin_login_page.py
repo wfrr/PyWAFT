@@ -1,13 +1,16 @@
+"""Модуль страницы администратора"""
+
 from typing import Union
 
 import allure
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
-from library.pages.base_page import BasePage
+from library.pages.cart.base_page import BasePage
 
 
 class AdminLoginPage(BasePage):
+    """Класс страницы администратора"""
 
     _icon_locator = (By.CSS_SELECTOR, '#header a.navbar-brand img')
 

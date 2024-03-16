@@ -1,3 +1,5 @@
+"""Модуль инициализации соединения с БД OpenCart"""
+
 from typing import Mapping
 
 from sqlalchemy import create_engine
@@ -11,7 +13,8 @@ def init_db_connection(conf: Mapping[str, str]) -> Session:
     :returns Session: подключение к бд
     """
     engine_ = create_engine(
-        f'mysql+pymysql://{conf["username"]}:{conf["password"]}@{conf["host"]}:{conf["port"]}/{conf["db_name"]}',
+        f'mysql+pymysql://{conf["username"]}:{conf["password"]
+                                              }@{conf["host"]}:{conf["port"]}/{conf["db_name"]}',
         echo=False, pool_size=5, max_overflow=10
     )
     return Session(bind=engine_)

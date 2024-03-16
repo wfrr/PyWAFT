@@ -1,3 +1,5 @@
+"""Модуль базовый страницы POM OpenCart"""
+
 from typing import Optional, Tuple
 
 import allure
@@ -7,6 +9,7 @@ from selenium.webdriver.remote.webelement import WebElement
 
 
 class BasePage:
+    """Базовая страница POM"""
 
     def __init__(self, driver):
         self.driver = driver

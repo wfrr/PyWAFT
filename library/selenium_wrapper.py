@@ -1,26 +1,29 @@
-from selenium.webdriver.chrome import webdriver
+"""Врапперы для работы с selenium"""
+
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.chrome.webdriver import WebDriver as ChromeWebDriver
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxWebDriver
 from selenium.webdriver.edge.options import Options as EdgeOptions
-from selenium.webdriver.edge.webdriver import WebDriver as EdgeWebDriver
-from selenium import webdriver
+from selenium.webdriver import Chrome
+from selenium.webdriver import Firefox
+from selenium.webdriver import Edge
 
 
-def init_chrome(browser_version: str) -> ChromeWebDriver:
+def init_chrome(browser_version: str) -> Chrome:
+    """Инициализация вебдрайвера Chrome"""
     options = ChromeOptions()
     options.browser_version = browser_version
-    return webdriver.Chrome(options=options)
+    return Chrome(options=options)
 
 
-def init_firefox(browser_version: str) -> FirefoxWebDriver:
+def init_firefox(browser_version: str) -> Firefox:
+    """Инициализация вебдрайвера Firefox"""
     options = FirefoxOptions()
     options.browser_version = browser_version
-    return webdriver.Firefox(options=options)
+    return Firefox(options=options)
 
 
-def init_edge(browser_version: str) -> EdgeWebDriver:
+def init_edge(browser_version: str) -> Edge:
+    """Инициализация вебдрайвера Edge"""
     options = EdgeOptions()
     options.browser_version = browser_version
-    return webdriver.Edge(options=options)
+    return Edge(options=options)
