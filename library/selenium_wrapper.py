@@ -7,23 +7,31 @@ from selenium.webdriver import Chrome
 from selenium.webdriver import Firefox
 from selenium.webdriver import Edge
 
+from library.test_utils.browser_data import BrowserData
 
-def init_chrome(browser_version: str) -> Chrome:
-    """Инициализация вебдрайвера Chrome"""
+
+def init_chrome(browser_data: BrowserData) -> Chrome:
+    """Инициализация веб-драйвера Chrome"""
     options = ChromeOptions()
-    options.browser_version = browser_version
+    options.browser_version = browser_data.version
+    for arg in browser_data.cli_args:
+        options.add_argument(arg)
     return Chrome(options=options)
 
 
-def init_firefox(browser_version: str) -> Firefox:
-    """Инициализация вебдрайвера Firefox"""
+def init_firefox(browser_data: BrowserData) -> Firefox:
+    """Инициализация веб-драйвера Firefox"""
     options = FirefoxOptions()
-    options.browser_version = browser_version
+    options.browser_version = browser_data.version
+    for arg in browser_data.cli_args:
+        options.add_argument(arg)
     return Firefox(options=options)
 
 
-def init_edge(browser_version: str) -> Edge:
-    """Инициализация вебдрайвера Edge"""
+def init_edge(browser_data: BrowserData) -> Edge:
+    """Инициализация веб-драйвера Edge"""
     options = EdgeOptions()
-    options.browser_version = browser_version
+    options.browser_version = browser_data.version
+    for arg in browser_data.cli_args:
+        options.add_argument(arg)
     return Edge(options=options)

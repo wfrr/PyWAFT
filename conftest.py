@@ -1,21 +1,20 @@
 """Глобальные фикстуры фреймворка"""
 
-import platform
+import sys
 from os import path
-from typing import Mapping, Union, Generator, Optional, Callable, Any
+from platform import platform
+from typing import Union, Generator, Optional, Callable, Any
 
 import allure
 import pytest
 from _pytest.fixtures import SubRequest
-from selenium.webdriver.chrome.webdriver import WebDriver as ChromeWebDriver
-from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxWebDriver
-from selenium.webdriver.edge.webdriver import WebDriver as EdgeWebDriver
-from sqlalchemy.orm import Session
+from selenium.webdriver import Chrome
+from selenium.webdriver import Firefox
+from selenium.webdriver import Edge
 
-from library.database.cart import init_db_connection
 from library.selenium_wrapper import init_chrome, init_firefox, init_edge
-from library.test_utils.user_data import PersonInfo
-from library.utils import random_string
+from library.test_utils.browser_data import BrowserData
+from library.test_utils.stand_data import StandData
 
 
 ALLURE_ENVIRONMENT_PROPERTIES_FILE = 'environment.properties'
@@ -44,64 +43,43 @@ def add_allure_env_property(request: SubRequest) -> Optional[Callable]:
 
 @pytest.fixture(scope='module')
 @allure.title('Инициализация веб драйвера')
-def driver(
-        variables: Mapping[str, Union[str,
-                                      Mapping[str, Mapping[str, Union[str, int]]]]]
-) -> Generator[Union[ChromeWebDriver, FirefoxWebDriver, EdgeWebDriver], None, None]:
-    """Инициализация вебдрайвера"""
-    browser = {'chrome': init_chrome,
-               'firefox': init_firefox, 'edge': init_edge}
-    _driver = browser[variables['capabilities']['browser']](
-        variables['capabilities']['browser_version'])
+def driver(browser_data: BrowserData) -> Generator[Union[Chrome, Firefox, Edge], None, None]:
+    """Инициализация веб-драйвера"""
+    init_browser = {'chrome': init_chrome,
+                    'firefox': init_firefox, 'edge': init_edge}
+    _driver = init_browser[browser_data.name](browser_data)
     yield _driver
     _driver.quit()
 
 
-@pytest.fixture(scope='module')
-@allure.title('Инициализация подключения к БД')
-def db_session(
-        variables: Mapping[str, Union[str,
-                                      Mapping[str, Mapping[str, Union[str, int]]]]]
-) -> Generator[Session, None, None]:
-    """Инициализация подключения к БД"""
-    db_conf = {
-        'username': variables['database']['username'],
-        'password': variables['database']['password'],
-        'host': variables['database']['host'],
-        'port': variables['database']['port'],
-        'db_name': variables['database']['db_name']
-    }
-    yield init_db_connection(db_conf)
+@allure.title('Загрузка переменных стенда')
+@pytest.fixture(scope='session')
+def stand(variables):
+    """Загрузка переменных стенда"""
+    try:
+        yield StandData(env=variables['stand']['env'])
+    except KeyError as k:
+        sys.exit(f'Отсутствует секция "{k.args[0]}" в файле данных стенда')
+
+
+@allure.title('Загрузка переменных браузера')
+@pytest.fixture(scope='session')
+def browser_data(variables):
+    """Загрузка переменных браузера"""
+    try:
+        variables['browser'].setdefault('cli-arguments', [])
+        yield BrowserData(name=variables['browser']['name'],
+                          version=variables['browser']['version'],
+                          cli_args=variables['browser']['cli-arguments'])
+    except KeyError as k:
+        sys.exit(f'Отсутствует секция {k.args[0]} в файле данных браузера')
 
 
 @pytest.fixture(scope='session', autouse=True)
 @allure.title('Запись переменных окружения')
-def environment(add_allure_env_property: Callable,
-                variables: Mapping[str, Union[str, Mapping[str, Mapping[str, Union[str, int]]]]]) -> None:
+def environment(add_allure_env_property: Callable, stand: StandData, browser_data: BrowserData) -> None:
     """Наполнение allure-отчета требуемыми переменными окружения"""
-    add_allure_env_property('ENV', variables['environment'])
-    add_allure_env_property('Browser', variables['capabilities']['browser'])
-    add_allure_env_property(
-        'Browser-version', variables['capabilities']['browser_version'])
-    add_allure_env_property('OS', platform.platform())
-
-
-@pytest.fixture(scope='module')
-@allure.title('Генерация имени')
-def random_first_name():
-    """Фикстура генерации случайного имени"""
-    yield random_string(5)
-
-
-@pytest.fixture(scope='module')
-@allure.title('Генерация фамилии')
-def random_last_name():
-    """Фикстура генерации случайной фамилии"""
-    yield random_string(8)
-
-
-@pytest.fixture(scope='module')
-@allure.title('Генерация персональных данных')
-def personal_info(random_first_name: str, random_last_name: str):
-    """Фикстура генерации персональной информации"""
-    yield PersonInfo(first_name=random_first_name, last_name=random_last_name)
+    add_allure_env_property('ENV', stand.env)
+    add_allure_env_property('Browser', browser_data.name)
+    add_allure_env_property('BrowserVersion', browser_data.version)
+    add_allure_env_property('OS', platform())

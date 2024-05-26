@@ -1,6 +1,6 @@
 """Модуль тестов редактирования данных учетной записи"""
 
-from typing import Mapping, Union
+from typing import Union
 
 import allure
 import pytest
@@ -12,22 +12,20 @@ from sqlalchemy.orm import Session
 from library.database.cart import select_customer_by_id
 from library.pages.cart import EditAccountPage, AccountPage
 from library.test_utils.base import assert_strings_equal
-from library.test_utils.user_data import PersonInfo
+from library.test_utils.cart.cart_data import CartData
+from library.test_utils.cart.user_data import PersonInfo
 
 
 @allure.title('Проверка редактирования поля клиента')
 @pytest.mark.edit_account
 def test_edit_customer_account_data(
         db_session: Session, driver: Union[ChromeWebDriver, FirefoxWebDriver, EdgeWebDriver],
-        edit_customer_page: EditAccountPage, personal_info: PersonInfo,
-        variables: Mapping[str, Union[str,
-                                      Mapping[str, Mapping[str, Union[str, int]]]]]
+        edit_customer_page: EditAccountPage, personal_info: PersonInfo, stand: CartData
 ) -> None:
     """Тест редактирования учетной записи покупателя"""
     with allure.step('Проверка существующих данных клиента'):
         customer = select_customer_by_id(
-            db_session, variables['users']['customer']['customer_id']
-        )
+            db_session, stand.users['customer']['customer_id'])
         assert_strings_equal(value1=edit_customer_page.get_first_name(), value2=customer['firstname'],
                              msg='Ошибка соответствия имени клиента')
         assert_strings_equal(value1=edit_customer_page.get_last_name(), value2=customer['lastname'],
@@ -44,8 +42,7 @@ def test_edit_customer_account_data(
         assert_strings_equal(value1=msg, value2='Success: Your account has been successfully updated.',
                              msg='Ошибка проверки сообщения об успешном сохранении')
         customer = select_customer_by_id(
-            db_session, variables['users']['customer']['customer_id']
-        )
+            db_session, stand.users['customer']['customer_id'])
         assert_strings_equal(value1=customer['firstname'], value2=personal_info.first_name,
                              msg='Ошибка соответствия имени клиента после изменения')
         assert_strings_equal(value1=customer['lastname'], value2=personal_info.last_name,
