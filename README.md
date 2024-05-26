@@ -12,6 +12,9 @@
 [browser]
 name = "firefox"
 version = "100"
+
+[[browser.prefs]]
+"browser.download.manager.showWhenStarting" = false
 ```
 
 ```
@@ -20,6 +23,10 @@ version = "100"
 cli-arguments = ["--incognito", "--user-data-dir=C:\\Temp\\chrome"]
 name = "chrome"
 version = "119"
+
+[[browser.prefs]]
+"download.prompt_for_download" = false
+"safebrowsing.enabled" = true
 ```
 
 ```
