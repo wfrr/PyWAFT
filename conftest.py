@@ -67,12 +67,18 @@ def stand(variables):
 def browser_data(variables):
     """Загрузка переменных браузера"""
     try:
-        variables['browser'].setdefault('cli-arguments', [])
-        variables['browser'].setdefault('prefs', [])
-        yield BrowserData(name=variables['browser']['name'],
-                          version=variables['browser']['version'],
-                          cli_args=variables['browser']['cli-arguments'],
-                          prefs=variables['browser']['prefs'])
+        yield BrowserData(
+            name=variables['browser']['name'],
+            version=variables['browser']['version'],
+            cli_args=variables['browser'].setdefault('cli-arguments', []),
+            prefs=variables['browser'].setdefault('prefs', []),
+            page_load_strategy=variables['browser'].setdefault(
+                'page_load_strategy', 'normal'),
+            accept_insecure_certs=variables['browser'].setdefault(
+                'accept_insecure_certs', False),
+            unhandled_prompt_behavior=variables['browser'].setdefault(
+                'unhandled_prompt_behavior', 'dismiss and notify')
+        )
     except KeyError as k:
         sys.exit(f'Отсутствует секция {k.args[0]} в файле данных браузера')
 

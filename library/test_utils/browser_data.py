@@ -11,3 +11,6 @@ class BrowserData:
     version: str
     cli_args: list[str]
     prefs: list[dict[str, Union[bool, str, int, dict, list[str]]]]
+    page_load_strategy: str
+    accept_insecure_certs: bool
+    unhandled_prompt_behavior: str
