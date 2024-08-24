@@ -1,13 +1,13 @@
-"""Модуль страницы входа"""
+"""Модуль страницы входа."""
 
-from typing import Annotated, Union
+from typing import Annotated
 
 import allure
 from selenium.webdriver import Chrome, Edge, Firefox
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.wait import WebDriverWait
 
 from library.test_utils.page_factory import page_factory
 
@@ -16,22 +16,23 @@ from .home_page import HomePage
 
 
 class LoginPage(BasePage):
-    """Класс страницы входа"""
+    """Класс страницы входа."""
 
     _login_field = Annotated[WebElement, By.NAME, 'login']
     _password_field = Annotated[WebElement, By.ID, 'password']
     _login_btn = Annotated[WebElement, By.CSS_SELECTOR, '.v-form button[type=submit]']
 
-    def __init__(self, driver: Union[Chrome, Firefox, Edge]) -> None:
+    def __init__(self, driver: Chrome | Firefox | Edge) -> None:
         super().__init__(driver)
         self.driver = driver
         self.timeout = 15
-        WebDriverWait(self.driver, self.timeout).until(ec.title_is(
-            'Login'), message='Ошибка перехода на страницу входа')
+        WebDriverWait(self.driver, self.timeout).until(
+            ec.title_is('Login'),
+            message='Ошибка перехода на страницу входа',
+        )
 
     def fill_login(self, login: str) -> None:
-        """
-        Заполнение поля 'E-Mail or Username'
+        """Заполнение поля 'E-Mail or Username'.
 
         :param str login: логин пользователя
         """
@@ -40,8 +41,7 @@ class LoginPage(BasePage):
             self._login_field.send_keys(login)
 
     def fill_password(self, passwd: str) -> None:
-        """
-        Заполнение поля 'Password'
+        """Заполнение поля 'Password'.
 
         :param str passwd: пароль пользователя
         """
@@ -50,15 +50,14 @@ class LoginPage(BasePage):
             self._password_field.send_keys(passwd)
 
     def do_login(self) -> None:
-        """Нажатие кнопки 'Login'"""
+        """Нажатие кнопки 'Login'."""
         with allure.step('Нажатие кнопки "Login"'):
             url = self.driver.current_url
             WebDriverWait(self.driver, self.timeout).until(ec.element_to_be_clickable(self._login_btn)).click()
             WebDriverWait(self.driver, self.timeout).until(ec.url_changes(url))
 
     def login_user(self, username: str, passwd: str) -> HomePage:
-        """
-        Вход пользователя
+        """Вход пользователя.
 
         :param str username: имя пользователя
         :param str passwd: пароль пользователя

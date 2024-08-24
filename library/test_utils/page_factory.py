@@ -1,12 +1,14 @@
-from typing import Annotated, Type, TypeVar, get_origin
+"""Модуль файбрики страниц тестируемого приложедния."""
+
+from typing import Annotated, TypeVar, get_origin
+
 from selenium.webdriver.remote.webdriver import WebDriver
 
 T = TypeVar('T')
 
 
-def page_factory(driver: WebDriver, page_class: Type[T]) -> Type:
-    """
-    Фабрика страниц POM
+def page_factory(driver: WebDriver, page_class: type[T]) -> type:
+    """Фабрика страниц POM.
 
     Пример класса страницы:
 
@@ -18,6 +20,6 @@ def page_factory(driver: WebDriver, page_class: Type[T]) -> Type:
         if get_origin(field_value) is Annotated:
             # ищем элементы по локаторам как атрибутам класса
             loc_strat, loc_value = field_value.__metadata__
-            field_value = driver.find_element(by=loc_strat, value=loc_value)
-            page_object.__dict__[field_name] = field_value
+            element = driver.find_element(by=loc_strat, value=loc_value)
+            page_object.__dict__[field_name] = element
     return page_object

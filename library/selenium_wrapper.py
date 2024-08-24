@@ -1,17 +1,15 @@
-"""Врапперы для работы с selenium"""
+"""Врапперы для работы с selenium."""
 
+from selenium.webdriver import Chrome, Edge, Firefox
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
-from selenium.webdriver import Chrome
-from selenium.webdriver import Firefox
-from selenium.webdriver import Edge
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 from library.test_utils.browser_data import BrowserData
 
 
 def init_chrome(browser_data: BrowserData) -> Chrome:
-    """Инициализация веб-драйвера Chrome"""
+    """Инициализация веб-драйвера Chrome."""
     options = ChromeOptions()
     options.browser_version = browser_data.version
     options.page_load_strategy = browser_data.page_load_strategy
@@ -25,7 +23,7 @@ def init_chrome(browser_data: BrowserData) -> Chrome:
 
 
 def init_firefox(browser_data: BrowserData) -> Firefox:
-    """Инициализация веб-драйвера Firefox"""
+    """Инициализация веб-драйвера Firefox."""
     options = FirefoxOptions()
     options.browser_version = browser_data.version
     options.page_load_strategy = browser_data.page_load_strategy
@@ -40,7 +38,7 @@ def init_firefox(browser_data: BrowserData) -> Firefox:
 
 
 def init_edge(browser_data: BrowserData) -> Edge:
-    """Инициализация веб-драйвера Edge"""
+    """Инициализация веб-драйвера Edge."""
     options = EdgeOptions()
     options.browser_version = browser_data.version
     options.page_load_strategy = browser_data.page_load_strategy

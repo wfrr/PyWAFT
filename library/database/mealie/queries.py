@@ -1,14 +1,19 @@
-"""Модуль методов запросов к БД OpenCart"""
+"""Модуль методов запросов к БД Mealie."""
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from ._models import ShoppingListItems, ShoppingLists, Users, IngredientFoods, IngredientUnits
+from ._models import (
+    IngredientFoods,
+    IngredientUnits,
+    ShoppingListItems,
+    ShoppingLists,
+    Users,
+)
 
 
 def select_shopping_list_by_name(session: Session, shopping_list_name: str, username: str) -> list[list[str]]:
-    """
-    Получение данных покупателя по Id
+    """Получение данных покупателя по Id.
 
     Выполнения SQL-запроса:
     ```SELECT
@@ -35,17 +40,24 @@ def select_shopping_list_by_name(session: Session, shopping_list_name: str, user
     """
     with session as s:
         statement = (
-            select(IngredientFoods.name.label('item'),
-                   ShoppingListItems.quantity,
-                   IngredientUnits.name.label('units'),
-                   ShoppingListItems.note)
+            select(
+                IngredientFoods.name.label('item'),
+                ShoppingListItems.quantity,
+                IngredientUnits.name.label('units'),
+                ShoppingListItems.note,
+            )
             .select_from(ShoppingListItems)
             .join(ShoppingLists, ShoppingListItems.shopping_list_id == ShoppingLists.id)
             .join(Users, ShoppingLists.user_id == Users.id)
             .join(IngredientFoods, ShoppingListItems.food_id == IngredientFoods.id)
-            .join(IngredientUnits, ShoppingListItems.unit_id == IngredientUnits.id, isouter=True)
+            .join(
+                IngredientUnits,
+                ShoppingListItems.unit_id == IngredientUnits.id,
+                isouter=True,
+            )
             .where(Users.username == username)
-            .where(ShoppingLists.name == shopping_list_name))
+            .where(ShoppingLists.name == shopping_list_name)
+        )
 
         results = s.execute(statement).all()
 

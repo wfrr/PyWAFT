@@ -1,16 +1,15 @@
-"""Модуль моделей таблиц для работа с БД Mealie"""
+"""Модуль моделей таблиц для работа с БД Mealie."""
 
 from sqlalchemy.ext.declarative import DeferredReflection
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
 class Base(DeclarativeBase):
-    """Базовый класс для объявления моделей таблиц БД Mealie"""
+    """Базовый класс для объявления моделей таблиц БД Mealie."""
 
 
 class Reflected(DeferredReflection):
-    """
-    Базовый класс для отображения существующих таблиц из БД.
+    """Базовый класс для отображения существующих таблиц из БД.
 
     Позволяет определить необходимые таблицы до инициализации соединения:
         https://docs.sqlalchemy.org/en/20/orm/declarative_tables.html#using-deferredreflection
@@ -19,7 +18,7 @@ class Reflected(DeferredReflection):
 
 
 class ShoppingListItems(Reflected, Base):
-    """Класс представления таблицы 'shopping_list_items'"""
+    """Класс представления таблицы 'shopping_list_items'."""
 
     __tablename__ = 'shopping_list_items'
 
@@ -31,7 +30,7 @@ class ShoppingListItems(Reflected, Base):
 
 
 class ShoppingLists(Reflected, Base):
-    """Класс представления таблицы 'shopping_lists'"""
+    """Класс представления таблицы 'shopping_lists'."""
 
     __tablename__ = 'shopping_lists'
 
@@ -41,7 +40,7 @@ class ShoppingLists(Reflected, Base):
 
 
 class Users(Reflected, Base):
-    """Класс представления таблицы 'users'"""
+    """Класс представления таблицы 'users'."""
 
     __tablename__ = 'users'
 
@@ -50,7 +49,7 @@ class Users(Reflected, Base):
 
 
 class IngredientFoods(Reflected, Base):
-    """Класс представления таблицы 'ingredient_foods'"""
+    """Класс представления таблицы 'ingredient_foods'."""
 
     __tablename__ = 'ingredient_foods'
 
@@ -59,7 +58,7 @@ class IngredientFoods(Reflected, Base):
 
 
 class IngredientUnits(Reflected, Base):
-    """Класс представления таблицы 'ingredient_units'"""
+    """Класс представления таблицы 'ingredient_units'."""
 
     __tablename__ = 'ingredient_units'
 
