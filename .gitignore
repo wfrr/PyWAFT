@@ -1,5 +1,6 @@
 **/__pycache__
 .idea/
+.vscode/
 .venv/
 .pytest_cache
 allure-results/

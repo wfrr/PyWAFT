@@ -1,0 +1,17 @@
+[tool.autopep8]
+max_line_length = 120
+
+[tool.pylint.main]
+score = false
+load-plugins = ["pylint_pytest"]
+ignore-paths = "^.venv/.*$"
+init-hook = "import os, sys; sys.path.append(os.getcwd())"
+
+[tool.pylint.'MESSAGES CONTROL']
+max-line-length = 120
+disable = "too-few-public-methods"
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+reportAttributeAccessIssue = "warning"

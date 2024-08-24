@@ -1,13 +1,17 @@
 # Python Web Automation Testing Framework
 
 ## Описание
+
 Исследовательский проект по разработке фреймворка для автоматизации тестирования web-приложения
-[OpenCart](https://github.com/opencart/opencart) на Python с использованием pytest и Selenium.
+[Mealie](https://github.com/mealie-recipes/mealie) на Python с использованием pytest и Selenium.
+
+### Пример запуска теста
+
+`$ python -m pytest tests/mealie/ui/test_login.py --variables config/stand/mealie-test.toml --variables config/browser/firefox-120.toml`
 
 ### Примеры конфига браузера
 
-
-```
+```toml
 # Firefox
 [browser]
 name = "firefox"
@@ -17,7 +21,7 @@ version = "100"
 "browser.download.manager.showWhenStarting" = false
 ```
 
-```
+```toml
 # Chrome
 [browser]
 cli-arguments = ["--incognito", "--user-data-dir=C:\\Temp\\chrome"]
@@ -29,7 +33,7 @@ version = "119"
 "safebrowsing.enabled" = true
 ```
 
-```
+```toml
 # Edge
 [browser]
 cli-arguments = "--incognito"
@@ -39,7 +43,7 @@ version = "100"
 
 ### Пример конфига тестового стенда
 
-```
+```toml
 [stand]
 env = "test"
 

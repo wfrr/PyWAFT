@@ -1,0 +1,9 @@
+
+-r dev.txt
+allure-pytest
+
+pytest
+pytest-variables[toml]
+requests
+selenium
+SQLAlchemy

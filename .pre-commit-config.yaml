@@ -1,5 +1,5 @@
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
       - id: trailing-whitespace
@@ -17,21 +17,15 @@ repos:
       - id: double-quote-string-fixer
       - id: sort-simple-yaml
 
-- repo: https://github.com/hhatto/autopep8
-  rev: v2.1.1
-  hooks:
-  - id: autopep8
+  - repo: https://github.com/hhatto/autopep8
+    rev: v2.3.1
+    hooks:
+      - id: autopep8
 
-- repo: local
-  hooks:
-  - id: pylint
-    name: pylint
-    entry: pylint
-    language: system
-    types: [python]
-    args: ['-rn', '-sn', '--ignore-paths=^.venv/.*$', '--max-line-length=120', '--exclude-too-few-public-methods']
-
-# https://pylint.pycqa.org/en/latest/user_guide/installation/pre-commit-integration.html
-# https://pylint.pycqa.org/en/latest/user_guide/configuration/all-options.html
-# https://pylint.pycqa.org/en/latest/user_guide/messages/messages_overview.html
-# https://github.com/pylint-dev/pylint-pytest
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
