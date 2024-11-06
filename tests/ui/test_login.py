@@ -3,8 +3,8 @@
 import allure
 import pytest
 
-from library.pages.mealie.login_page import LoginPage
-from library.test_utils.mealie.app_data import AppData
+from mealie.app_data import AppData
+from mealie.pages.login_page import LoginPage
 
 
 @allure.tag('login')

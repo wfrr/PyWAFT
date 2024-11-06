@@ -14,6 +14,7 @@ class Reflected(DeferredReflection):
     Позволяет определить необходимые таблицы до инициализации соединения:
         https://docs.sqlalchemy.org/en/20/orm/declarative_tables.html#using-deferredreflection
     """
+
     __abstract__ = True
 
 

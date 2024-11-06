@@ -9,7 +9,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
-from library.test_utils.page_factory import page_factory
+from core.page_factory import init_class_elements
 
 from .base_page import BasePage
 from .home_page import HomePage
@@ -18,11 +18,12 @@ from .home_page import HomePage
 class LoginPage(BasePage):
     """Класс страницы входа."""
 
-    _login_field = Annotated[WebElement, By.NAME, 'login']
-    _password_field = Annotated[WebElement, By.ID, 'password']
-    _login_btn = Annotated[WebElement, By.CSS_SELECTOR, '.v-form button[type=submit]']
+    _login_field: Annotated[WebElement, By.NAME, 'login']
+    _password_field: Annotated[WebElement, By.ID, 'password']
+    _login_btn: Annotated[WebElement, By.CSS_SELECTOR, '.v-form button[type=submit]']
 
     def __init__(self, driver: Chrome | Firefox | Edge) -> None:
+        """Инициализация класса страницы входа."""
         super().__init__(driver)
         self.driver = driver
         self.timeout = 15
@@ -63,8 +64,8 @@ class LoginPage(BasePage):
         :param str passwd: пароль пользователя
         :return HomePage: ссылка на объект домашней страницы пользователя
         """
-        with allure.step(f'Вход покупателя {username}'):
+        with allure.step(f'Вход пользователя {username}'):
             self.fill_login(username)
             self.fill_password(passwd)
             self.do_login()
-            return page_factory(self.driver, HomePage)
+            return init_class_elements(self.driver, HomePage)

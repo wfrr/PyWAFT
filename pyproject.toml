@@ -1,6 +1,10 @@
 [tool.autopep8]
 max_line_length = 120
 
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
 [tool.ruff]
 line-length = 120
 indent-width = 4
@@ -8,7 +12,7 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["D203", "D213", "S101", "RUF002"]
+ignore = ["D203", "D213", "S101", "RUF002", "RUF002"]
 
 fixable = ["ALL"]
 unfixable = []

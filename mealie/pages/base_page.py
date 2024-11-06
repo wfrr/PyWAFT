@@ -7,7 +7,8 @@ from selenium.webdriver import Chrome, Edge, Firefox
 class BasePage:
     """Базовая страница POM."""
 
-    def __init__(self, driver: Chrome | Firefox | Edge):
+    def __init__(self, driver: Chrome | Firefox | Edge) -> None:
+        """Инициализация класса базовой страницы."""
         self.driver = driver
         self.timeout = 10
 

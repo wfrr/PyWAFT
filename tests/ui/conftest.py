@@ -1,5 +1,6 @@
 """Фикстуры автотестов Mealie."""
 
+
 import sys
 from collections.abc import Callable, Generator
 from platform import platform
@@ -10,11 +11,14 @@ from selenium.webdriver import Chrome, Edge, Firefox
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from library.pages.mealie.login_page import LoginPage
-from library.selenium_wrapper import init_chrome, init_edge, init_firefox
-from library.test_utils.browser_data import BrowserData
-from library.test_utils.mealie.app_data import AppData
-from library.test_utils.page_factory import page_factory
+from core.browser import init_chrome, init_edge, init_firefox
+from core.page_factory import init_object_elements
+from mealie.app_data import AppData
+from mealie.browser_data import BrowserData
+from mealie.database.queries import select_shopping_list_by_name
+from mealie.pages.home_page import HomePage
+from mealie.pages.login_page import LoginPage
+from mealie.pages.shopping_lists_page import ShoppingListsPage
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -56,20 +60,29 @@ def driver(
 @pytest.fixture
 @allure.title('Переход на страницу логина')
 def login_page(driver: Chrome | Firefox | Edge, stand: AppData) -> LoginPage:
-    """Открытие страницы входа покупателя."""
+    """Открытие страницы входа пользователя."""
     driver.get(stand.app['url'])
-    return page_factory(driver, LoginPage)
+    page = LoginPage(driver)
+    init_object_elements(driver, page)
+    return page
 
 
 @pytest.fixture
-@allure.title('Инициализация подключения к БД')
-def orm_db_session(stand: AppData) -> Session:
-    """Инициализация подключения к БД с использованием ORM."""
-    conf = stand.db
-    engine_ = create_engine(
-        f'postgresql+psycopg2://{conf["username"]}:{conf["password"]}@{conf["host"]}:{conf["port"]}/{conf["name"]}',
-        echo=False,
-        pool_size=5,
-        max_overflow=10,
-    )
-    return Session(bind=engine_)
+@allure.title('Домашняя страница пользователя')
+def home_page(stand: AppData, login_page: LoginPage) -> HomePage:
+    """Открытие домашней страницы пользователя."""
+    return login_page.login_user(stand.users['regular']['username'], stand.users['regular']['password'])
+
+
+@pytest.fixture
+@allure.title('Cтраница списка покупок пользователя')
+def shopping_lists_page(home_page: HomePage) -> ShoppingListsPage:
+    """Открытие страницы списков покупок пользователя."""
+    return home_page.open_shopping_lists()
+
+
+@pytest.fixture
+@allure.title('Получение списка по купок по названию')
+def shopping_list(orm_db_session: Session, stand: AppData, request) -> list[list[str]]:
+    """Получение списка по купок по названию."""
+    return select_shopping_list_by_name(orm_db_session, request.param, stand.users['regular']['username'])

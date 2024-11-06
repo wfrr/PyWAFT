@@ -13,7 +13,7 @@ from ._models import (
 
 
 def select_shopping_list_by_name(session: Session, shopping_list_name: str, username: str) -> list[list[str]]:
-    """Получение данных покупателя по Id.
+    """Получение данных пользователя по Id.
 
     Выполнения SQL-запроса:
     ```SELECT
