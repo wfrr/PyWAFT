@@ -25,6 +25,8 @@ def init_class_elements(driver: WebDriver, page: type[T]) -> T:
 
 def init_object_elements(driver: WebDriver, page_obj: T) -> None:
     """Инициализация элементов страницы объекта страницы POM."""
+    if not getattr(page_obj, '__annotations__', None):
+        return
     for attr_name, typedata in get_type_hints(page_obj, include_extras=True).items():
         element = driver.find_element(*typedata.__metadata__)
         setattr(page_obj, attr_name, element)

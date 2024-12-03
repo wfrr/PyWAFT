@@ -8,13 +8,11 @@ from platform import platform
 import allure
 import pytest
 from selenium.webdriver import Chrome, Edge, Firefox
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
 
+from core.app_data import AppData
 from core.browser import init_chrome, init_edge, init_firefox
+from core.browser_data import BrowserData
 from core.page_factory import init_object_elements
-from mealie.app_data import AppData
-from mealie.browser_data import BrowserData
 from mealie.database.queries import select_shopping_list_by_name
 from mealie.pages.home_page import HomePage
 from mealie.pages.login_page import LoginPage
@@ -82,7 +80,7 @@ def shopping_lists_page(home_page: HomePage) -> ShoppingListsPage:
 
 
 @pytest.fixture
-@allure.title('Получение списка по купок по названию')
-def shopping_list(orm_db_session: Session, stand: AppData, request) -> list[list[str]]:
-    """Получение списка по купок по названию."""
-    return select_shopping_list_by_name(orm_db_session, request.param, stand.users['regular']['username'])
+@allure.title('Получение списка покупок по названию')
+def shopping_list(stand: AppData, request) -> list[list[str]]:
+    """Получение списка покупок по названию."""
+    return select_shopping_list_by_name(stand.db, request.param, stand.users['regular']['username'])

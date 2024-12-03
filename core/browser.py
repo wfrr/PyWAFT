@@ -5,7 +5,7 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
-from mealie.browser_data import BrowserData
+from core.browser_data import BrowserData
 
 
 def init_chrome(browser_data: BrowserData) -> Chrome:

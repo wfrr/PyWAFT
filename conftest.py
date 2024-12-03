@@ -9,7 +9,7 @@ import allure
 import pytest
 from _pytest.fixtures import SubRequest
 
-from mealie.browser_data import BrowserData
+from core.browser_data import BrowserData
 
 
 @pytest.fixture(scope='session', autouse=True)

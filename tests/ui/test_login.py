@@ -3,7 +3,7 @@
 import allure
 import pytest
 
-from mealie.app_data import AppData
+from core.app_data import AppData
 from mealie.pages.login_page import LoginPage
 
 
