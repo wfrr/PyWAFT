@@ -1,7 +1,7 @@
 """Модуль страницы списков покупок пользователя."""
-
 from typing import Annotated
 
+import allure
 from selenium.webdriver import Chrome, Edge, Firefox
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -50,9 +50,10 @@ class ShoppingListsPage(BasePage):
 
         :returns: список объектов элементов списка покупок
         """
-        _shopping_lists = self.driver.find_elements(
-            By.CSS_SELECTOR, 'div.container:nth-child(1) > section:nth-child(5) > a')
-        return [ShoppingList(el) for el in _shopping_lists]
+        with allure.step('Получение списка списков для покупок'):
+            _shopping_lists = self.driver.find_elements(
+                By.CSS_SELECTOR, 'div.container:nth-child(1) > section:nth-child(5) > a')
+            return [ShoppingList(el) for el in _shopping_lists]
 
     def open_shopping_list(self, name: str) -> ShoppingListPage:
         """Открытие списка покупок по названию.
@@ -60,5 +61,6 @@ class ShoppingListsPage(BasePage):
         :param name str: название списка покупок
         :return ShoppingListPage: ссылка на объект списка покупок пользователя
         """
-        next(filter(lambda e: e.get_name() == name, self.shopping_lists())).open()
-        return init_class_elements(self.driver, ShoppingListPage)
+        with allure.step('Открытие списка покупок по названию'):
+            next(filter(lambda e: e.get_name() == name, self.shopping_lists())).open()
+            return init_class_elements(self.driver, ShoppingListPage)

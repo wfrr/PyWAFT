@@ -2,6 +2,7 @@
 
 from typing import Annotated
 
+import allure
 from selenium.webdriver import Chrome, Edge, Firefox
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -43,19 +44,22 @@ class ShoppingListPage(BasePage):
 
         :returns: название списка покупок
         """
-        return self._shopping_list_headline.text
+        with allure.step('Получение названия списка для покупок'):
+            return self._shopping_list_headline.text
 
     def get_all_entry_notes(self) -> list[Entry]:
         """Получение списка всех записей.
 
         :returns: список элементов в списке покупок
         """
-        _shopping_list_entry = self.driver.find_elements(By.CSS_SELECTOR, 'section div.v-lazy div.text-bold')
-        return [Entry(el) for el in _shopping_list_entry]
+        with allure.step('Получение списка всех записей'):
+            _shopping_list_entry = self.driver.find_elements(By.CSS_SELECTOR, 'section div.v-lazy div.text-bold')
+            return [Entry(el) for el in _shopping_list_entry]
 
     def get_all_entry_notes_text(self) -> list[str]:
         """Получение списка текстов всех записей.
 
         :returns: список текстов в элементах списка покупок
         """
-        return [e.get_note() for e in self.get_all_entry_notes()]
+        with allure.step('Получение списка текстов всех записей'):
+            return [e.get_note() for e in self.get_all_entry_notes()]
