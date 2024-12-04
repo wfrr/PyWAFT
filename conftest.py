@@ -35,7 +35,7 @@ def add_allure_env_property(
 
 @allure.title('Загрузка переменных браузера')
 @pytest.fixture(scope='session')
-def browser_data(variables) -> Generator[BrowserData, Any, None]:
+def browser_data(variables: dict) -> Generator[BrowserData, Any, None]:
     """Загрузка переменных браузера."""
     try:
         yield BrowserData(

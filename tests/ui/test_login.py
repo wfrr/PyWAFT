@@ -9,6 +9,7 @@ from mealie.pages.login_page import LoginPage
 
 @allure.tag('login')
 @allure.title('Проверка входа в пользователя')
+@pytest.mark.ui
 @pytest.mark.login
 def test_user_logon(login_page: LoginPage, stand: AppData) -> None:
     """Тест проверки входа."""

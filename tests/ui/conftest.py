@@ -7,6 +7,7 @@ from platform import platform
 
 import allure
 import pytest
+from _pytest.fixtures import SubRequest
 from selenium.webdriver import Chrome, Edge, Firefox
 
 from core.app_data import AppData
@@ -31,7 +32,7 @@ def environment(add_allure_env_property: Callable, stand: AppData, browser_data:
 
 @allure.title('Загрузка переменных стенда')
 @pytest.fixture(scope='session')
-def stand(variables) -> Generator[AppData, None, None]:
+def stand(variables: dict) -> Generator[AppData, None, None]:
     """Загрузка переменных стенда."""
     try:
         yield AppData(
@@ -81,6 +82,6 @@ def shopping_lists_page(home_page: HomePage) -> ShoppingListsPage:
 
 @pytest.fixture
 @allure.title('Получение списка покупок по названию')
-def shopping_list(stand: AppData, request) -> list[list[str]]:
+def shopping_list(stand: AppData, request: SubRequest) -> list[list[str]]:
     """Получение списка покупок по названию."""
     return select_shopping_list_by_name(stand.db, request.param, stand.users['regular']['username'])
