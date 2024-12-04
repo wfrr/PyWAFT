@@ -50,7 +50,7 @@ class ShoppingListPage(BasePage):
 
         :returns: список элементов в списке покупок
         """
-        _shopping_list_entry = self.driver.find_elements(By.CSS_SELECTOR, 'section div.v-lazy')
+        _shopping_list_entry = self.driver.find_elements(By.CSS_SELECTOR, 'section div.v-lazy div.text-bold')
         return [Entry(el) for el in _shopping_list_entry]
 
     def get_all_entry_notes_text(self) -> list[str]:

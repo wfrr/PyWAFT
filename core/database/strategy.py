@@ -24,20 +24,20 @@ class PostrgreSQLDataBaseStrategy(DataBaseStrategy):
 
     def __init__(self, conf: dict[str, str]) -> None:
         """Инициализация стратегии."""
-        engine = create_engine(
+        self._engine = create_engine(
             f'postgresql+psycopg2://{conf["username"]}:{conf["password"]}@{conf["host"]}:{conf["port"]}/{conf["name"]}',
             echo=False,
             pool_size=5,
             max_overflow=10,
         )
-        self._session = Session(bind=engine)
 
     def execute_query(self, q: Select) -> Sequence:
         """Метод выполнения sql-запроса.
 
         :params str q: SQL-запрос для выполнения
         """
-        return self._session.execute(q).all()
+        with Session(bind=self._engine) as s:
+            return s.execute(q).all()
 
     def execute_query_text(self, text_query: str) -> Sequence:
         """Метод выполнения sql-запроса из строки текста.
@@ -45,4 +45,5 @@ class PostrgreSQLDataBaseStrategy(DataBaseStrategy):
         :params str text_query: SQL-запрос для выполнения в виде текста
         """
         query = text(text_query)
-        return self._session.execute(query).all()
+        with Session(bind=self._engine) as s:
+            return s.execute(query).all()

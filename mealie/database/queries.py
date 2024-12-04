@@ -1,7 +1,17 @@
 """Модуль методов запросов к БД Mealie."""
 
+from sqlalchemy import select
+
 from core.database.context import DataBaseContext
 from core.database.strategy import PostrgreSQLDataBaseStrategy
+
+from .model import (
+    IngredientFoods,
+    IngredientUnits,
+    ShoppingListItems,
+    ShoppingLists,
+    Users,
+)
 
 
 def select_shopping_list_by_name(conf: dict[str, str], shopping_list_name: str, username: str) -> list[list[str]]:
@@ -32,3 +42,35 @@ def select_shopping_list_by_name(conf: dict[str, str], shopping_list_name: str, 
        ORDER BY SLI.CREATED_AT DESC;
     """
     return [[row.item, row.quantity, row.units, row.note] for row in context.execute_query_text(statement)]
+
+
+def select_shopping_list_by_name_orm(conf: dict[str, str], shopping_list_name: str, username: str) -> list[list[str]]:
+    """Получение данных пользователя по Id.
+
+    :param dict conf: данные для подключения к БД
+    :param str shopping_list_name: название списка покупок
+    :param str username: имя пользователя
+    :returns list: список с данными
+    """
+    context = DataBaseContext(PostrgreSQLDataBaseStrategy(conf))
+    statement = (
+        select(
+            IngredientFoods.name.label('item'),
+            ShoppingListItems.quantity,
+            IngredientUnits.name.label('units'),
+            ShoppingListItems.note,
+        )
+        .select_from(ShoppingListItems)
+        .join(ShoppingLists, ShoppingListItems.shopping_list_id == ShoppingLists.id)
+        .join(Users, ShoppingLists.user_id == Users.id)
+        .join(IngredientFoods, ShoppingListItems.food_id == IngredientFoods.id, isouter=True)
+        .join(
+            IngredientUnits,
+            ShoppingListItems.unit_id == IngredientUnits.id,
+            isouter=True,
+        )
+        .where(Users.username == username)
+        .where(ShoppingLists.name == shopping_list_name)
+        .order_by(ShoppingListItems.created_at.desc())
+    )
+    return [[row.item, row.quantity, row.units, row.note] for row in context.execute_query(statement)]

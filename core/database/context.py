@@ -25,14 +25,14 @@ class DataBaseContext:
         self._strategy = strategy
 
     def execute_query(self, q: Select) -> Sequence:
-        """Выполнение стратегии.
+        """Выполнение SQL-запроса через ORM с  использованием выбранной стратегии.
 
         :params str q: SQL-запрос для выполнения
         """
         return self._strategy.execute_query(q)
 
     def execute_query_text(self, q: str) -> Sequence:
-        """Выполнение стратегии.
+        """Выполнение SQL-запроса в виде строки с  использованием выбранной стратегии.
 
         :params str q: SQL-запрос для выполнения
         """
