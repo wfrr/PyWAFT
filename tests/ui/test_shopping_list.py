@@ -1,7 +1,9 @@
+"""Модуль тестов списка покупок."""
+
 import allure
 import pytest
 
-from mealie.pages.shopping_lists_page import ShoppingListsPage
+from library.mealie.pages.shopping_lists_page import ShoppingListsPage
 
 
 @allure.title('Проверка списка покупок пользователя')
@@ -32,5 +34,5 @@ def test_user_shopping_orm(shopping_lists_page: ShoppingListsPage, shopping_list
     entry_notes = shopping_list_page.get_all_entry_notes_text()
     assert len(shopping_list_orm) == len(entry_notes)
     for exp_entry, entry_note in zip(shopping_list_orm, entry_notes, strict=True):
-        with allure.step(f'Проверка соответствия значений элемента списка покупок: {exp_entry[0]}'):
-            assert exp_entry[0] == entry_note
+        with allure.step(f'Проверка соответствия значений элемента списка покупок: {exp_entry[3]}'):
+            assert exp_entry[3] == entry_note

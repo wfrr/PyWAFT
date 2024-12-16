@@ -2,8 +2,7 @@
 
 from sqlalchemy import select
 
-from core.database.context import DataBaseContext
-from core.database.strategy import PostrgreSQLDataBaseStrategy
+from library.db_client import PostgreSQLDBClient
 
 from .model import (
     IngredientFoods,
@@ -22,7 +21,6 @@ def select_shopping_list_by_name(conf: dict[str, str], shopping_list_name: str, 
     :param str username: имя пользователя
     :returns list: список с данными
     """
-    context = DataBaseContext(PostrgreSQLDataBaseStrategy(conf))
     statement = f"""
        SELECT
         SL.NAME AS SHOPPING_LIST,
@@ -41,7 +39,8 @@ def select_shopping_list_by_name(conf: dict[str, str], shopping_list_name: str, 
            AND SL.NAME = '{shopping_list_name}'
        ORDER BY SLI.CREATED_AT DESC;
     """
-    return [[row.item, row.quantity, row.units, row.note] for row in context.execute_query_text(statement)]
+    return [[row.item, row.quantity, row.units, row.note] for row
+                in PostgreSQLDBClient(conf).execute_query_text(statement)]
 
 
 def select_shopping_list_by_name_orm(conf: dict[str, str], shopping_list_name: str, username: str) -> list[list[str]]:
@@ -52,7 +51,6 @@ def select_shopping_list_by_name_orm(conf: dict[str, str], shopping_list_name: s
     :param str username: имя пользователя
     :returns list: список с данными
     """
-    context = DataBaseContext(PostrgreSQLDataBaseStrategy(conf))
     statement = (
         select(
             IngredientFoods.name.label('item'),
@@ -73,4 +71,4 @@ def select_shopping_list_by_name_orm(conf: dict[str, str], shopping_list_name: s
         .where(ShoppingLists.name == shopping_list_name)
         .order_by(ShoppingListItems.created_at.desc())
     )
-    return [[row.item, row.quantity, row.units, row.note] for row in context.execute_query(statement)]
+    return [[row.item, row.quantity, row.units, row.note] for row in PostgreSQLDBClient(conf).execute_query(statement)]

@@ -4,7 +4,7 @@ import allure
 import pytest
 
 from core.app_data import AppData
-from mealie.pages.login_page import LoginPage
+from library.mealie.pages.login_page import LoginPage
 
 
 @allure.title('Проверка входа в пользователя')

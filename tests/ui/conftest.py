@@ -14,10 +14,10 @@ from core.app_data import AppData
 from core.browser import init_chrome, init_edge, init_firefox
 from core.browser_data import BrowserData
 from core.page_factory import init_object_elements
-from mealie.database.queries import select_shopping_list_by_name, select_shopping_list_by_name_orm
-from mealie.pages.home_page import HomePage
-from mealie.pages.login_page import LoginPage
-from mealie.pages.shopping_lists_page import ShoppingListsPage
+from library.mealie.database.queries import select_shopping_list_by_name, select_shopping_list_by_name_orm
+from library.mealie.pages.home_page import HomePage
+from library.mealie.pages.login_page import LoginPage
+from library.mealie.pages.shopping_lists_page import ShoppingListsPage
 
 
 @pytest.fixture(scope='session', autouse=True)
