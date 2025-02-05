@@ -1,9 +1,0 @@
-
--r dev.txt
-allure-pytest
-psycopg2-binary
-pytest
-pytest-variables[toml]
-requests
-selenium
-SQLAlchemy

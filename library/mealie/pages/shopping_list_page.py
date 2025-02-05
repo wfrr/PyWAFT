@@ -21,13 +21,13 @@ class Entry:
 
     def get_note(self) -> str:
         """Получения текста записи."""
-        return self._root.find_element(By.XPATH, './/p').text
+        return self._root.find_element(By.XPATH, ".//p").text
 
 
 class ShoppingListPage(BasePage):
     """Класс страницы списка покупок пользователя."""
 
-    _shopping_list_headline: Annotated[WebElement, By.CSS_SELECTOR, 'h2.headline']
+    _shopping_list_headline: Annotated[WebElement, By.CSS_SELECTOR, "h2.headline"]
 
     def __init__(self, driver: Chrome | Firefox | Edge) -> None:
         """Инициализация класса страницы списка покупок пользователя."""
@@ -35,8 +35,8 @@ class ShoppingListPage(BasePage):
         self.driver = driver
         self.timeout = 15
         WebDriverWait(self.driver, self.timeout).until(
-            ec.title_is('Shopping List'),
-            message='Ошибка перехода на страницу списка покупок',
+            ec.title_is("Shopping List"),
+            message="Ошибка перехода на страницу списка покупок",
         )
 
     def get_list_name(self) -> str:
@@ -44,7 +44,7 @@ class ShoppingListPage(BasePage):
 
         :returns: название списка покупок
         """
-        with allure.step('Получение названия списка для покупок'):
+        with allure.step("Получение названия списка для покупок"):
             return self._shopping_list_headline.text
 
     def get_all_entry_notes(self) -> list[Entry]:
@@ -52,8 +52,10 @@ class ShoppingListPage(BasePage):
 
         :returns: список элементов в списке покупок
         """
-        with allure.step('Получение списка всех записей'):
-            _shopping_list_entry = self.driver.find_elements(By.CSS_SELECTOR, 'section div.v-lazy div.text-bold')
+        with allure.step("Получение списка всех записей"):
+            _shopping_list_entry = self.driver.find_elements(
+                By.CSS_SELECTOR, "section div.v-lazy div.text-bold"
+            )
             return [Entry(el) for el in _shopping_list_entry]
 
     def get_all_entry_notes_text(self) -> list[str]:
@@ -61,5 +63,5 @@ class ShoppingListPage(BasePage):
 
         :returns: список текстов в элементах списка покупок
         """
-        with allure.step('Получение списка текстов всех записей'):
+        with allure.step("Получение списка текстов всех записей"):
             return [e.get_note() for e in self.get_all_entry_notes()]

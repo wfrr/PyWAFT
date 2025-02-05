@@ -1,5 +1,0 @@
-# dev deps
-debugpy
-pre-commit
-pytest-ruff
-ruff

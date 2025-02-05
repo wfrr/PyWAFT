@@ -18,9 +18,9 @@ from .home_page import HomePage
 class LoginPage(BasePage):
     """Класс страницы входа."""
 
-    _login_field: Annotated[WebElement, By.NAME, 'login']
-    _password_field: Annotated[WebElement, By.ID, 'password']
-    _login_btn: Annotated[WebElement, By.CSS_SELECTOR, '.v-form button[type=submit]']
+    _login_field: Annotated[WebElement, By.NAME, "login"]
+    _password_field: Annotated[WebElement, By.ID, "password"]
+    _login_btn: Annotated[WebElement, By.CSS_SELECTOR, ".v-form button[type=submit]"]
 
     def __init__(self, driver: Chrome | Firefox | Edge) -> None:
         """Инициализация класса страницы входа."""
@@ -28,8 +28,8 @@ class LoginPage(BasePage):
         self.driver = driver
         self.timeout = 15
         WebDriverWait(self.driver, self.timeout).until(
-            ec.title_is('Login'),
-            message='Ошибка перехода на страницу входа',
+            ec.title_is("Login"),
+            message="Ошибка перехода на страницу входа",
         )
 
     def fill_login(self, login: str) -> None:
@@ -54,7 +54,9 @@ class LoginPage(BasePage):
         """Нажатие кнопки 'Login'."""
         with allure.step('Нажатие кнопки "Login"'):
             url = self.driver.current_url
-            WebDriverWait(self.driver, self.timeout).until(ec.element_to_be_clickable(self._login_btn)).click()
+            WebDriverWait(self.driver, self.timeout).until(
+                ec.element_to_be_clickable(self._login_btn)
+            ).click()
             WebDriverWait(self.driver, self.timeout).until(ec.url_changes(url))
 
     def login_user(self, username: str, passwd: str) -> HomePage:
@@ -64,7 +66,7 @@ class LoginPage(BasePage):
         :param str passwd: пароль пользователя
         :return HomePage: ссылка на объект домашней страницы пользователя
         """
-        with allure.step(f'Вход пользователя {username}'):
+        with allure.step(f"Вход пользователя {username}"):
             self.fill_login(username)
             self.fill_password(passwd)
             self.do_login()

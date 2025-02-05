@@ -1,30 +1,9 @@
-[tool.autopep8]
-max_line_length = 120
+[tool.black]
+line-length = 90
+
+[tool.isort]
+profile = "black"
 
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
-
-[tool.ruff]
-line-length = 120
-indent-width = 4
-target-version = "py311"
-
-[tool.ruff.lint]
-select = ["ALL"]
-ignore = ["D203", "D213", "S101", "RUF001", "RUF002"]
-
-fixable = ["ALL"]
-unfixable = []
-
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-[tool.ruff.format]
-quote-style = "single"
-indent-style = "space"
-line-ending = "auto"
-docstring-code-format = false
-docstring-code-line-length = "dynamic"
-
-[tool.ruff.lint.flake8-quotes]
-inline-quotes = "single"

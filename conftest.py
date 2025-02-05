@@ -27,7 +27,7 @@ def add_allure_env_property(
     alluredir = request.config.getoption('--alluredir')
     if not alluredir or not Path(alluredir).is_dir() or not environment_properties:
         return
-    allure_env_path = Path(alluredir) / 'environment.properties'
+    allure_env_path = Path(alluredir, 'environment.properties')
     with Path.open(allure_env_path, 'w', encoding='utf-8') as _f:
         data = '\n'.join([f'{variable}={value}' for variable, value in environment_properties.items()])
         _f.write(data)

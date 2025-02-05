@@ -17,10 +17,10 @@ class BasePage:
 
         :returns str: заголовок страницы
         """
-        with allure.step('Получение заголовка страницы'):
+        with allure.step("Получение заголовка страницы"):
             return self.driver.title
 
     def scroll_to_bottom(self) -> None:
         """Прокручивание стриницы вниз."""
-        with allure.step('Прокручивание стриницы вниз'):
-            self.driver.execute('window.scrollTo(0, document.body.scrollHeight);')
+        with allure.step("Прокручивание стриницы вниз"):
+            self.driver.execute("window.scrollTo(0, document.body.scrollHeight);")
