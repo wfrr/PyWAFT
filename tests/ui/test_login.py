@@ -3,7 +3,7 @@
 import allure
 import pytest
 
-from core.app_data import AppData
+from library.core.app_data import AppData
 from library.mealie.pages.login_page import LoginPage
 
 

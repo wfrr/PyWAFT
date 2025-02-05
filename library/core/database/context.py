@@ -10,15 +10,8 @@ from .strategy import DataBaseStrategy
 class DataBaseContext:
     """Класс контекста БД для выполнения SQL-запроса."""
 
-    def __init__(self, strategy: DataBaseStrategy | None = None) -> None:
+    def __init__(self, strategy: DataBaseStrategy) -> None:
         """Инициализация контекста.
-
-        :params DataBaseStrategy strategy: выбранная стратегия
-        """
-        self._strategy = strategy
-
-    def set_strategy(self, strategy: DataBaseStrategy) -> None:
-        """Установка новой стратегии.
 
         :params DataBaseStrategy strategy: выбранная стратегия
         """

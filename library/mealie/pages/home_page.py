@@ -9,7 +9,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
-from core.page_factory import init_class_elements
+from library.core.page_factory import init_class_elements
 
 from .base_page import BasePage
 from .shopping_lists_page import ShoppingListsPage

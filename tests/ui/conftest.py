@@ -8,6 +8,10 @@ import pytest
 from _pytest.fixtures import SubRequest
 from selenium.webdriver import Chrome, Edge, Firefox
 
+from library.core.app_data import AppData
+from library.core.browser import init_chrome, init_edge, init_firefox
+from library.core.browser_data import BrowserData
+from library.core.page_factory import init_object_elements
 from library.mealie.database.queries import (
     select_shopping_list_by_name,
     select_shopping_list_by_name_orm,

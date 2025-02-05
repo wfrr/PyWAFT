@@ -1,13 +1,22 @@
 """Модуль стратегии для подключения к БД."""
 
+from abc import ABC, abstractmethod
 from collections.abc import Sequence
 
 from sqlalchemy import Select, create_engine, text
 from sqlalchemy.orm import Session
 
 
-class DataBaseStrategy:
+class DataBaseStrategy(ABC):
     """Базовый класс стратегии для БД."""
+
+    @abstractmethod
+    def execute_query(self, q: Select) -> Sequence:
+        ...
+
+    @abstractmethod
+    def execute_query_text(self, text_query: str) -> Sequence:
+        ...
 
 
 class PostrgreSQLDataBaseStrategy(DataBaseStrategy):

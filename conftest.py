@@ -9,7 +9,8 @@ import allure
 import pytest
 from _pytest.fixtures import SubRequest
 
-from core.browser_data import BrowserData
+from library.core.app_data import AppData
+from library.core.browser_data import BrowserData
 
 
 @pytest.fixture(scope='session', autouse=True)
