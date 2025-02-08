@@ -53,7 +53,7 @@ class ShoppingListsPage(BasePage):
         """
         with allure.step("Получение списка списков для покупок"):
             _shopping_lists = self.driver.find_elements(
-                By.CSS_SELECTOR, "div.container:nth-child(1) > section:nth-child(5) > a"
+                By.CSS_SELECTOR, "div.container:nth-child(1) > section .v-card"
             )
             return [ShoppingList(el) for el in _shopping_lists]
 
