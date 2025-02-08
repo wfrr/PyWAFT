@@ -2,12 +2,14 @@
 
 from uuid import UUID
 
+import allure
 from requests import Response
 
 from library.api_client import ApiClient
 from library.mealie.api import routes
 
 
+@allure.step("Получение всех пользователей")
 def get_all_users(
     client: ApiClient, headers: dict[str, str] | None = None, **params: dict | None
 ) -> Response:
@@ -21,6 +23,7 @@ def get_all_users(
     return client.get(routes.ADMIN_ALL_USERS, headers=headers, params=params)
 
 
+@allure.step("Создание пользователя")
 def create_user(
     client: ApiClient, headers: dict[str, str] | None = None, body=None
 ) -> Response:
@@ -34,6 +37,7 @@ def create_user(
     return client.post(routes.ADMIN_CREATE_USER, headers=headers, body=body)
 
 
+@allure.step("Удаление пользователя")
 def delete_user(
     client: ApiClient, user_id: UUID | str, headers: dict[str, str] | None = None
 ) -> Response:

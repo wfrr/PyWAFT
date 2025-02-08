@@ -1,11 +1,13 @@
 """Модуль с бизнесовыми методами по работе с CRUD-операциями пользователя."""
 
+import allure
 from requests import Response
 
 from library.api_client import ApiClient
 from library.mealie.api import routes
 
 
+@allure.step("Изменение пользователя")
 def update_user(
     client: ApiClient,
     headers: dict[str, str] | None = None,

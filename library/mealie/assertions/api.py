@@ -1,9 +1,11 @@
 """Проверки, связанные с API."""
 
+import allure
 from jsonschema import validate
 from requests import Response
 
 
+@allure.step("Сравнение кода ответа с ожидаемым")
 def assert_status_code(response: Response, expected_code: int) -> None:
     """Сравнение кода ответа с ожидаемым.
 
@@ -14,6 +16,7 @@ def assert_status_code(response: Response, expected_code: int) -> None:
     assert response.status_code == expected_code
 
 
+@allure.step("Проверка тела ответа на соответствие схеме")
 def assert_schema(response: Response, schema) -> None:
     """Проверка тела ответа на соответствие схеме.
 

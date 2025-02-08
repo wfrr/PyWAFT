@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+import allure
 import pytest
 
 from library.api_client import ApiClient
@@ -10,8 +11,10 @@ from library.mealie.assertions.api import assert_schema, assert_status_code
 
 @pytest.mark.smoke
 @pytest.mark.api
+@allure.title("Проверка получения информации о приложении")
 def test_about_app_info(unauthorized_client: ApiClient):
-    """
+    """Проверка получения информации о приложении.
+
     GET /api/app/about
     """
     response = get_app_info(unauthorized_client)
@@ -21,8 +24,10 @@ def test_about_app_info(unauthorized_client: ApiClient):
 
 @pytest.mark.smoke
 @pytest.mark.api
+@allure.title("Получение информации о параметрах запуска приложения")
 def test_about_app_startup_info(unauthorized_client: ApiClient):
-    """
+    """Получение информации о параметрах запуска приложения.
+
     GET /api/app/about/startup-info
     """
     response = get_app_startup_info(unauthorized_client)

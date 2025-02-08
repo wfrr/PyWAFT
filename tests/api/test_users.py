@@ -3,6 +3,7 @@ import random
 from http import HTTPStatus
 from string import ascii_letters
 
+import allure
 import pytest
 
 from library.api_client import ApiClient
@@ -18,6 +19,7 @@ from library.mealie.assertions.api import assert_schema, assert_status_code
 
 
 @pytest.mark.api
+@allure.title("Тест получения списка пользователей")
 def test_list_users(admin_authorized_client: ApiClient):
     """Тест получения списка пользователей.
 
@@ -31,6 +33,7 @@ def test_list_users(admin_authorized_client: ApiClient):
 
 
 @pytest.mark.api
+@allure.title("Тест получения списка пользователей")
 def test_create_user(admin_authorized_client: ApiClient):
     """Тест получения списка пользователей.
 
@@ -52,6 +55,7 @@ def test_create_user(admin_authorized_client: ApiClient):
 
 
 @pytest.mark.api
+@allure.title("Тест изменения пароля пользователя")
 def test_update_user(user_authorized_client: ApiClient, stand: AppData):
     """Тест изменения пароля пользователя.
 
@@ -66,6 +70,7 @@ def test_update_user(user_authorized_client: ApiClient, stand: AppData):
 
 
 @pytest.mark.api
+@allure.title("Тест удаления пользовател")
 def test_delete_user(admin_authorized_client: ApiClient, test_user_data: list):
     """Тест удаления пользователя.
 
