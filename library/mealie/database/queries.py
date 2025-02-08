@@ -13,7 +13,9 @@ from .model import (
 )
 
 
-def select_shopping_list_by_name(conf: dict[str, str], shopping_list_name: str, username: str) -> list[list[str]]:
+def select_shopping_list_by_name(
+    conf: dict[str, str], shopping_list_name: str, username: str
+) -> list[list[str]]:
     """Получение данных пользователя по Id.
 
     :param dict conf: данные для подключения к БД
@@ -39,11 +41,15 @@ def select_shopping_list_by_name(conf: dict[str, str], shopping_list_name: str, 
            AND SL.NAME = '{shopping_list_name}'
        ORDER BY SLI.CREATED_AT DESC;
     """
-    return [[row.item, row.quantity, row.units, row.note] for row
-                in PostgreSQLDBClient(conf).execute_query_text(statement)]
+    return [
+        [row.item, row.quantity, row.units, row.note]
+        for row in PostgreSQLDBClient(conf).execute_query_text(statement)
+    ]
 
 
-def select_shopping_list_by_name_orm(conf: dict[str, str], shopping_list_name: str, username: str) -> list[list[str]]:
+def select_shopping_list_by_name_orm(
+    conf: dict[str, str], shopping_list_name: str, username: str
+) -> list[list[str]]:
     """Получение данных пользователя по Id.
 
     :param dict conf: данные для подключения к БД
@@ -53,15 +59,17 @@ def select_shopping_list_by_name_orm(conf: dict[str, str], shopping_list_name: s
     """
     statement = (
         select(
-            IngredientFoods.name.label('item'),
+            IngredientFoods.name.label("item"),
             ShoppingListItems.quantity,
-            IngredientUnits.name.label('units'),
+            IngredientUnits.name.label("units"),
             ShoppingListItems.note,
         )
         .select_from(ShoppingListItems)
         .join(ShoppingLists, ShoppingListItems.shopping_list_id == ShoppingLists.id)
         .join(Users, ShoppingLists.user_id == Users.id)
-        .join(IngredientFoods, ShoppingListItems.food_id == IngredientFoods.id, isouter=True)
+        .join(
+            IngredientFoods, ShoppingListItems.food_id == IngredientFoods.id, isouter=True
+        )
         .join(
             IngredientUnits,
             ShoppingListItems.unit_id == IngredientUnits.id,
@@ -71,4 +79,45 @@ def select_shopping_list_by_name_orm(conf: dict[str, str], shopping_list_name: s
         .where(ShoppingLists.name == shopping_list_name)
         .order_by(ShoppingListItems.created_at.desc())
     )
-    return [[row.item, row.quantity, row.units, row.note] for row in PostgreSQLDBClient(conf).execute_query(statement)]
+    return [
+        [row.item, row.quantity, row.units, row.note]
+        for row in PostgreSQLDBClient(conf).execute_query(statement)
+    ]
+
+
+def select_test_users_id_by_name(conf: dict[str, str]) -> list[list[str]]:
+    """Получение id тестовых пользователей.
+
+    :param dict conf: данные для подключения к БД
+    :returns list: список с данными
+    """
+    statement = f"""
+       SELECT
+           U.ID,
+           G.NAME AS GROUP,
+           H.NAME AS HOUSEHOLD,
+           U.GROUP_ID,
+           U.HOUSEHOLD_ID,
+           U.CACHE_KEY,
+           G.SLUG AS GROUP_SLUG,
+           H.SLUG AS HOUSEHOLD_SLUG
+       FROM
+           PUBLIC.USERS U
+           JOIN PUBLIC.GROUPS G ON U.GROUP_ID = G.ID
+           JOIN PUBLIC.HOUSEHOLDS H ON U.HOUSEHOLD_ID = H.ID
+       WHERE
+           U.USERNAME LIKE 'test_%';
+    """
+    return [
+        [
+            row.id,
+            row.group,
+            row.household,
+            row.group_id,
+            row.household_id,
+            row.cache_key,
+            row.group_slug,
+            row.household_slug,
+        ]
+        for row in PostgreSQLDBClient(conf).execute_query_text(statement)
+    ]

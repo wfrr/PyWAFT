@@ -53,3 +53,17 @@ def browser_data(variables: dict) -> Generator[BrowserData, Any, None]:
         )
     except KeyError as k:
         sys.exit(f'Отсутствует секция {k.args[0]} в файле данных браузера')
+
+
+@allure.title('Загрузка переменных стенда')
+@pytest.fixture(scope='session')
+def stand(variables: dict) -> Generator[AppData, None, None]:
+    """Загрузка переменных стенда."""
+    try:
+        yield AppData(
+            app=variables['app'],
+            db=variables['app']['db'],
+            users=variables['app']['users'],
+        )
+    except KeyError as k:
+        sys.exit(f'Отсутствует секция "{k.args[0]}" в файле данных стенда')

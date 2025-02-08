@@ -11,7 +11,7 @@ class Base(DeclarativeBase):
 class ShoppingListItems(Base):
     """Класс представления таблицы 'shopping_list_items'."""
 
-    __tablename__ = 'shopping_list_items'
+    __tablename__ = "shopping_list_items"
 
     quantity: Mapped[float] = db.Column()
     note: Mapped[str] = db.Column()
@@ -24,7 +24,7 @@ class ShoppingListItems(Base):
 class ShoppingLists(Base):
     """Класс представления таблицы 'shopping_lists'."""
 
-    __tablename__ = 'shopping_lists'
+    __tablename__ = "shopping_lists"
 
     id: Mapped[str] = db.Column(primary_key=True)
     user_id: Mapped[str] = db.Column()
@@ -34,7 +34,7 @@ class ShoppingLists(Base):
 class Users(Base):
     """Класс представления таблицы 'users'."""
 
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id: Mapped[str] = db.Column(primary_key=True)
     username: Mapped[str] = db.Column()
@@ -43,7 +43,7 @@ class Users(Base):
 class IngredientFoods(Base):
     """Класс представления таблицы 'ingredient_foods'."""
 
-    __tablename__ = 'ingredient_foods'
+    __tablename__ = "ingredient_foods"
 
     name: Mapped[str] = db.Column()
     id: Mapped[str] = db.Column(primary_key=True)
@@ -52,7 +52,7 @@ class IngredientFoods(Base):
 class IngredientUnits(Base):
     """Класс представления таблицы 'ingredient_units'."""
 
-    __tablename__ = 'ingredient_units'
+    __tablename__ = "ingredient_units"
 
     name: Mapped[str] = db.Column()
     id: Mapped[str] = db.Column(primary_key=True)
