@@ -7,6 +7,7 @@ from requests import Response, Session
 
 
 class ApiClient:
+    """Клиент API для выполнения запросов."""
 
     def __init__(self, base_url: str) -> None:
         self._base_url = base_url
@@ -18,6 +19,7 @@ class ApiClient:
     def headers(self) -> MutableMapping[str, str | bytes]:
         return self._session.headers
 
+    # TODO: setter -> __add__
     @headers.setter
     def headers(self, headers: MutableMapping[str, str | bytes]) -> None:
         self._session.headers = headers

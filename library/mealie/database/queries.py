@@ -91,7 +91,7 @@ def select_test_users_id_by_name(conf: dict[str, str]) -> list[list[str]]:
     :param dict conf: данные для подключения к БД
     :returns list: список с данными
     """
-    statement = f"""
+    statement = """
        SELECT
            U.ID,
            G.NAME AS GROUP,

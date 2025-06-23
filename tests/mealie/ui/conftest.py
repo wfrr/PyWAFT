@@ -40,6 +40,8 @@ def driver(
 ) -> Generator[Chrome | Firefox | Edge, None, None]:
     """Инициализация веб-драйвера."""
     init_browser = {"chrome": init_chrome, "firefox": init_firefox, "edge": init_edge}
+    if browser_data.name not in init_browser.keys():
+        raise NotImplementedError(f"{browser_data.name} не поддерживается")
     _driver = init_browser[browser_data.name](browser_data)
     yield _driver
     _driver.quit()

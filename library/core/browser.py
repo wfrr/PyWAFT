@@ -16,7 +16,7 @@ def init_chrome(browser_data: BrowserData) -> Chrome:
     options.accept_insecure_certs = browser_data.accept_insecure_certs
     options.unhandled_prompt_behavior = browser_data.unhandled_prompt_behavior
     for pref in browser_data.prefs:
-        options.add_experimental_option('prefs', pref)
+        options.add_experimental_option("prefs", pref)
     for arg in browser_data.cli_args:
         options.add_argument(arg)
     return Chrome(options=options)
@@ -45,7 +45,7 @@ def init_edge(browser_data: BrowserData) -> Edge:
     options.accept_insecure_certs = browser_data.accept_insecure_certs
     options.unhandled_prompt_behavior = browser_data.unhandled_prompt_behavior
     for pref in browser_data.prefs:
-        options.add_experimental_option('prefs', pref)
+        options.add_experimental_option("prefs", pref)
     for arg in browser_data.cli_args:
         options.add_argument(arg)
     return Edge(options=options)

@@ -4,6 +4,8 @@
 .venv/
 .pytest_cache/
 .ruff_cache/
+.ropeproject/
+.zed/
 allure-results/
 docs/
 driver/

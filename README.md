@@ -5,9 +5,11 @@
 Исследовательский проект по разработке фреймворка для автоматизации тестирования web-приложения
 [Mealie](https://github.com/mealie-recipes/mealie) на Python с использованием pytest и Selenium.
 
-### Пример запуска теста в Firefox
+### Примеры запусков теста в Firefox
 
 `$ python -m pytest tests/mealie/ui/test_login.py --variables config/stand/mealie-test.toml --variables config/browser/firefox-120.toml`
+
+`$ python -m pytest -k api --variables config/stand/mealie-test.toml --variables config/browser/firefox-120.toml`
 
 ### Примеры конфига браузера
 

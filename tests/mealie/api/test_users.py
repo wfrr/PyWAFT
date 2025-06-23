@@ -26,7 +26,8 @@ def test_list_users(admin_authorized_client: ApiClient):
     GET /api/admin/users
     """
     users_resp = get_all_users(
-        admin_authorized_client, params={"orderBy": "id", "orderDirection": "desc"}
+        admin_authorized_client, params={
+            "orderBy": "id", "orderDirection": "desc"}
     )
     assert_status_code(users_resp, HTTPStatus.OK)
     assert_schema(users_resp, ALL_USERS)
@@ -39,7 +40,8 @@ def test_create_user(admin_authorized_client: ApiClient):
 
     POST /api/admin/users
     """
-    username = "test_" + "".join(random.choice(ascii_letters) for _ in range(10))
+    username = "test_" + "".join(random.choice(ascii_letters)
+                                 for _ in range(10))
     password = "".join(random.choice(ascii_letters) for _ in range(15))
     body = json.dumps(
         {
@@ -63,9 +65,11 @@ def test_update_user(user_authorized_client: ApiClient, stand: AppData):
     """
     headers = {"Content-Type": "application/json"}
     body = json.dumps(
-        {"currentPassword": stand.users["regular"]["password"], "newPassword": "12345678"}
+        {"currentPassword": stand.users["regular"]
+            ["password"], "newPassword": "12345678"}
     )
-    updated_user_resp = update_user(user_authorized_client, headers=headers, body=body)
+    updated_user_resp = update_user(
+        user_authorized_client, headers=headers, body=body)
     assert_status_code(updated_user_resp, HTTPStatus.OK)
 
 
