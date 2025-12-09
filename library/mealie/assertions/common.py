@@ -23,3 +23,14 @@ def assert_ints_equal(value: int, exp_value: int, msg: str = ""):
     :param str msg: сообщение об ошибке, значение по умолчанию ""
     """
     assert value == exp_value, msg
+
+
+@allure.step("Проверка равенства списка ожидаемому")
+def assert_lists_equal(value: list, exp_value: list, msg: str = ""):
+    """Проверка равенства списка ожидаемому.
+
+    :param list value: значение для сравнения
+    :param list exp_value: ожидаемое значение
+    :param str msg: сообщение об ошибке, значение по умолчанию ""
+    """
+    assert value == exp_value, msg

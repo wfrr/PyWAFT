@@ -1,6 +1,6 @@
 """Модуль методов запросов к БД Mealie."""
 
-from sqlalchemy import select
+from sqlalchemy import case, select
 
 from library.db_client import PostgreSQLDBClient
 
@@ -24,22 +24,33 @@ def select_shopping_list_by_name(
     :returns list: список с данными
     """
     statement = f"""
-       SELECT
-        SL.NAME AS SHOPPING_LIST,
-        INF.NAME AS ITEM,
-        SLI.QUANTITY,
-        IU.NAME AS UNITS,
-        SLI.NOTE
-       FROM
-           PUBLIC.SHOPPING_LIST_ITEMS SLI
-           JOIN PUBLIC.SHOPPING_LISTS SL ON SLI.SHOPPING_LIST_ID = SL.ID
-           JOIN PUBLIC.USERS U ON U.ID = SL.USER_ID
-           LEFT JOIN PUBLIC.INGREDIENT_FOODS INF ON SLI.FOOD_ID = INF.ID
-           LEFT JOIN PUBLIC.INGREDIENT_UNITS IU ON SLI.UNIT_ID = IU.ID
-       WHERE
-           U.USERNAME = '{username}'
-           AND SL.NAME = '{shopping_list_name}'
-       ORDER BY SLI.CREATED_AT DESC;
+        SELECT
+            SL.NAME AS SHOPPING_LIST,
+            CASE
+                WHEN SLI.QUANTITY > 1 THEN INF.PLURAL_NAME
+                ELSE INF.NAME
+            END AS ITEM,
+            SLI.QUANTITY,
+            CASE
+                WHEN SLI.QUANTITY > 1 THEN IU.PLURAL_NAME
+                ELSE IU.NAME
+            END AS UNITS,
+            SLI.NOTE
+        FROM
+            PUBLIC.SHOPPING_LIST_ITEMS SLI
+        JOIN PUBLIC.SHOPPING_LISTS SL ON
+            SLI.SHOPPING_LIST_ID = SL.ID
+        JOIN PUBLIC.USERS U ON
+            U.ID = SL.USER_ID
+        LEFT JOIN PUBLIC.INGREDIENT_FOODS INF ON
+            SLI.FOOD_ID = INF.ID
+        LEFT JOIN PUBLIC.INGREDIENT_UNITS IU ON
+            SLI.UNIT_ID = IU.ID
+        WHERE
+            U.USERNAME = '{username}'
+            AND SL.NAME = '{shopping_list_name}'
+        ORDER BY
+            SLI.LABEL_ID DESC
     """
     return [
         [row.item, row.quantity, row.units, row.note]
@@ -57,11 +68,22 @@ def select_shopping_list_by_name_orm(
     :param str username: имя пользователя
     :returns list: список с данными
     """
+    # condition = ShoppingListItems.quantity > 1
+    # result1 = IngredientFoods.plural_name
+    # result2 = IngredientUnits.plural_name
+    item = case(
+        (ShoppingListItems.quantity > 1, IngredientFoods.plural_name),
+        else_=IngredientFoods.name,
+    ).label("item")
+    units = case(
+        (ShoppingListItems.quantity > 1, IngredientUnits.plural_name),
+        else_=IngredientUnits.name,
+    ).label("units")
     statement = (
         select(
-            IngredientFoods.name.label("item"),
+            item,
             ShoppingListItems.quantity,
-            IngredientUnits.name.label("units"),
+            units,
             ShoppingListItems.note,
         )
         .select_from(ShoppingListItems)
@@ -77,7 +99,7 @@ def select_shopping_list_by_name_orm(
         )
         .where(Users.username == username)
         .where(ShoppingLists.name == shopping_list_name)
-        .order_by(ShoppingListItems.created_at.desc())
+        .order_by(ShoppingListItems.label_id.desc())
     )
     return [
         [row.item, row.quantity, row.units, row.note]

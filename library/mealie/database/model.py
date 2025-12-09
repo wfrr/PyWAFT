@@ -1,7 +1,7 @@
 """Модуль моделей таблиц для работа с БД Mealie."""
 
 import sqlalchemy as db
-from sqlalchemy.orm import DeclarativeBase, Mapped
+from sqlalchemy.orm import DeclarativeBase
 
 
 class Base(DeclarativeBase):
@@ -13,12 +13,13 @@ class ShoppingListItems(Base):
 
     __tablename__ = "shopping_list_items"
 
-    quantity: Mapped[float] = db.Column()
-    note: Mapped[str] = db.Column()
-    shopping_list_id: Mapped[str] = db.Column(primary_key=True)
-    food_id: Mapped[str] = db.Column()
-    unit_id: Mapped[str] = db.Column()
-    created_at: Mapped[str] = db.Column()
+    quantity = db.Column()
+    note = db.Column()
+    shopping_list_id = db.Column(primary_key=True)
+    food_id = db.Column()
+    unit_id = db.Column()
+    created_at = db.Column()
+    label_id = db.Column()
 
 
 class ShoppingLists(Base):
@@ -26,9 +27,9 @@ class ShoppingLists(Base):
 
     __tablename__ = "shopping_lists"
 
-    id: Mapped[str] = db.Column(primary_key=True)
-    user_id: Mapped[str] = db.Column()
-    name: Mapped[str] = db.Column(db.VARCHAR)
+    id = db.Column(primary_key=True)
+    user_id = db.Column()
+    name = db.Column(db.VARCHAR)
 
 
 class Users(Base):
@@ -36,8 +37,8 @@ class Users(Base):
 
     __tablename__ = "users"
 
-    id: Mapped[str] = db.Column(primary_key=True)
-    username: Mapped[str] = db.Column()
+    id = db.Column(primary_key=True)
+    username = db.Column()
 
 
 class IngredientFoods(Base):
@@ -45,8 +46,9 @@ class IngredientFoods(Base):
 
     __tablename__ = "ingredient_foods"
 
-    name: Mapped[str] = db.Column()
-    id: Mapped[str] = db.Column(primary_key=True)
+    name = db.Column()
+    plural_name = db.Column()
+    id = db.Column(primary_key=True)
 
 
 class IngredientUnits(Base):
@@ -54,5 +56,6 @@ class IngredientUnits(Base):
 
     __tablename__ = "ingredient_units"
 
-    name: Mapped[str] = db.Column()
-    id: Mapped[str] = db.Column(primary_key=True)
+    name = db.Column()
+    plural_name = db.Column()
+    id = db.Column(primary_key=True)

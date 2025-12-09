@@ -1,11 +1,8 @@
 """Модуль страницы списков покупок пользователя."""
 
-from typing import Annotated
-
 import allure
 from selenium.webdriver import Chrome, Edge, Firefox
 from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -15,26 +12,8 @@ from .base_page import BasePage
 from .shopping_list_page import ShoppingListPage
 
 
-class ShoppingList:
-    """Класс элемента списков покупок."""
-
-    def __init__(self, root: WebElement) -> None:
-        """Инициализация класса элементов списков покупок пользователя."""
-        self._root = root
-
-    def get_name(self) -> str:
-        """Получение названия списка для покупок."""
-        return self._root.find_element(By.XPATH, "./div").text
-
-    def open(self) -> None:
-        """Открытие списка покупок."""
-        self._root.find_element(By.XPATH, "./div").click()
-
-
 class ShoppingListsPage(BasePage):
     """Класс страницы списков покупок пользователя."""
-
-    _shopping_lists_headline: Annotated[WebElement, By.CSS_SELECTOR, "h2.headline"]
 
     def __init__(self, driver: Chrome | Firefox | Edge) -> None:
         """Инициализация класса страницы списков покупок пользователя."""
@@ -46,17 +25,6 @@ class ShoppingListsPage(BasePage):
             message="Ошибка перехода на домащнюю страницу",
         )
 
-    def shopping_lists(self) -> list[ShoppingList]:
-        """Получение списка списков для покупок.
-
-        :returns: список объектов элементов списка покупок
-        """
-        with allure.step("Получение списка списков для покупок"):
-            _shopping_lists = self.driver.find_elements(
-                By.CSS_SELECTOR, "div.container:nth-child(1) > section .v-card"
-            )
-            return [ShoppingList(el) for el in _shopping_lists]
-
     def open_shopping_list(self, name: str) -> ShoppingListPage:
         """Открытие списка покупок по названию.
 
@@ -64,5 +32,11 @@ class ShoppingListsPage(BasePage):
         :return ShoppingListPage: ссылка на объект списка покупок пользователя
         """
         with allure.step("Открытие списка покупок по названию"):
-            next(filter(lambda e: e.get_name() == name, self.shopping_lists())).open()
+            url = self.driver.current_url
+            shopping_list_name_locator = (
+                By.XPATH,
+                f'''//*[contains(@class,"v-card-title")]/span[contains(text(),"{name}")]''',
+            )
+            self.driver.find_element(*shopping_list_name_locator).click()
+            WebDriverWait(self.driver, 10).until(ec.url_changes(url))
             return init_class_elements(self.driver, ShoppingListPage)

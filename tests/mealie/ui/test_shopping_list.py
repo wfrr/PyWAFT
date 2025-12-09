@@ -3,7 +3,7 @@
 import allure
 import pytest
 
-from library.mealie.assertions.common import assert_ints_equal, assert_strings_equal
+from library.mealie.assertions.common import assert_lists_equal
 from library.mealie.pages.shopping_lists_page import ShoppingListsPage
 
 
@@ -18,12 +18,8 @@ def test_user_shopping(
     shopping_list_page = shopping_lists_page.open_shopping_list("birthday party")
     with allure.step("Проверка соответствия названия списка для покупок"):
         assert shopping_list_page.get_list_name() == "birthday party"
-    entry_notes = shopping_list_page.get_all_entry_notes_text()
-    assert_ints_equal(
-        len(shopping_list), len(entry_notes), "Ошибка проверки длины списка покупок"
-    )
-    for exp_entry, entry_note in zip(shopping_list, entry_notes, strict=True):
-        assert_strings_equal(exp_entry[3], entry_note, "Ошибка проверки списка покупок")
+    cart_entries = shopping_list_page.get_all_entries_content()
+    assert_lists_equal(shopping_list, cart_entries, "Ошибка проверки списка покупок")
 
 
 @allure.title("Проверка списка покупок пользователя с использованием orm")
@@ -35,11 +31,6 @@ def test_user_shopping_orm(
 ) -> None:
     """Тест проверки списка покупок."""
     shopping_list_page = shopping_lists_page.open_shopping_list("friday's lunch")
-    with allure.step("Проверка соответствия названия списка для покупок"):
-        assert shopping_list_page.get_list_name() == "friday's lunch"
-    entry_notes = shopping_list_page.get_all_entry_notes_text()
-    assert_ints_equal(
-        len(shopping_list_orm), len(entry_notes), "Ошибка проверки длины списка покупок"
-    )
-    for exp_entry, entry_note in zip(shopping_list_orm, entry_notes, strict=True):
-        assert_strings_equal(exp_entry[3], entry_note, "Ошибка проверки списка покупок")
+    assert shopping_list_page.get_list_name() == "friday's lunch"
+    cart_entries = shopping_list_page.get_all_entries_content()
+    assert_lists_equal(shopping_list_orm, cart_entries, "Ошибка проверки списка покупок")

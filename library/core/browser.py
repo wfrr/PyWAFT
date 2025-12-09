@@ -19,7 +19,11 @@ def init_chrome(browser_data: BrowserData) -> Chrome:
         options.add_experimental_option("prefs", pref)
     for arg in browser_data.cli_args:
         options.add_argument(arg)
-    return Chrome(options=options)
+    browser = Chrome(options=options)
+    # TODO: position и размер окна из конфига
+    # browser.set_window_position(0, 0)
+    # browser.set_window_size(1920, 1080)
+    return browser
 
 
 def init_firefox(browser_data: BrowserData) -> Firefox:
@@ -34,7 +38,10 @@ def init_firefox(browser_data: BrowserData) -> Firefox:
             options.set_preference(name, value)
     for arg in browser_data.cli_args:
         options.add_argument(arg)
-    return Firefox(options=options)
+    browser = Firefox(options=options)
+    # browser.set_window_position(0, 0)
+    # browser.set_window_size(1920, 1080)
+    return browser
 
 
 def init_edge(browser_data: BrowserData) -> Edge:
@@ -48,4 +55,7 @@ def init_edge(browser_data: BrowserData) -> Edge:
         options.add_experimental_option("prefs", pref)
     for arg in browser_data.cli_args:
         options.add_argument(arg)
-    return Edge(options=options)
+    browser = Edge(options=options)
+    # browser.set_window_position(0, 0)
+    # browser.set_window_size(1920, 1080)
+    return browser

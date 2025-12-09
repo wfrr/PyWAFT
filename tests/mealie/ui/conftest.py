@@ -51,7 +51,7 @@ def driver(
 @allure.title("Переход на страницу логина")
 def login_page(driver: Chrome | Firefox | Edge, stand: AppData) -> LoginPage:
     """Открытие страницы входа пользователя."""
-    driver.get(stand.app["url"])
+    driver.get(stand.app["login_url"])
     page = LoginPage(driver)
     init_object_elements(driver, page)
     return page

@@ -19,15 +19,31 @@ class Entry:
         """Инициализация класса элементов списков покупок пользователя."""
         self._root = root
 
-    def get_note(self) -> str:
+    def get_content(self) -> list[str | float]:
         """Получения текста записи."""
-        return self._root.find_element(By.XPATH, ".//p").text
+        name = self._root.find_element(By.CSS_SELECTOR, ".text-bold p").text
+        qt = self._root.find_element(By.CSS_SELECTOR, ".d-inline:nth-of-type(1) p").text
+        note = self._root.find_element(By.CSS_SELECTOR, ".note p").text
+        tp = (
+            self._root.text.replace("\n", "")
+            .replace(name, "")
+            .replace(qt, "")
+            .replace(note, "")
+        )
+        return [
+            name,
+            float(qt),
+            tp,
+            note,
+        ]
 
 
 class ShoppingListPage(BasePage):
     """Класс страницы списка покупок пользователя."""
 
-    _shopping_list_headline: Annotated[WebElement, By.CSS_SELECTOR, "h2.headline"]
+    _shopping_list_headline: Annotated[
+        WebElement, By.CSS_SELECTOR, "section.align-center h2"
+    ]
 
     def __init__(self, driver: Chrome | Firefox | Edge) -> None:
         """Инициализация класса страницы списка покупок пользователя."""
@@ -54,14 +70,14 @@ class ShoppingListPage(BasePage):
         """
         with allure.step("Получение списка всех записей"):
             _shopping_list_entry = self.driver.find_elements(
-                By.CSS_SELECTOR, "section div.v-lazy div.text-bold"
+                By.CSS_SELECTOR, "section div.text-subtitle-1"
             )
             return [Entry(el) for el in _shopping_list_entry]
 
-    def get_all_entry_notes_text(self) -> list[str]:
+    def get_all_entries_content(self) -> list[list[str | float]]:
         """Получение списка текстов всех записей.
 
         :returns: список текстов в элементах списка покупок
         """
         with allure.step("Получение списка текстов всех записей"):
-            return [e.get_note() for e in self.get_all_entry_notes()]
+            return [e.get_content() for e in self.get_all_entry_notes()]

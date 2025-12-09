@@ -51,6 +51,7 @@ env = "test"
 
 [stand.app]
 url = "http://127.0.0.4/store/"
+login_url = "http://127.0.0.4/store/login"
 
 [stand.db]
 username = "user"
