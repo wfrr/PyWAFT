@@ -73,4 +73,8 @@ url = "http://127.0.0.4/store/index.php?route=account/login"
 username = "admin"
 password = "admin"
 url = "http://127.0.0.4/store/admin/"
+
+
+[echoer]
+url = "http://192.168.122.8:8000"
 ```

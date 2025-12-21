@@ -3,10 +3,10 @@ from http import HTTPStatus
 import allure
 import pytest
 
-from library.api_client import ApiClient
+from library.api.api_client import ApiClient
+from library.assertions.api import assert_schema, assert_status_code
 from library.mealie.api.actions.about_app_info import get_app_info, get_app_startup_info
 from library.mealie.api.models import APP_ABOUT_INFO, APP_ABOUT_STARTUP_INFO
-from library.mealie.assertions.api import assert_schema, assert_status_code
 
 
 @pytest.mark.smoke

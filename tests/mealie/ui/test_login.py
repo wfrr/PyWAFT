@@ -3,8 +3,8 @@
 import allure
 import pytest
 
+from library.assertions.common import assert_strings_equal
 from library.core.app_data import AppData
-from library.mealie.assertions.common import assert_strings_equal
 from library.mealie.pages.login_page import LoginPage
 
 

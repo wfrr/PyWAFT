@@ -1,6 +1,6 @@
 """Модуль API-клиента для выполнения HTTP-запросов."""
 
-from typing import MutableMapping, Sequence
+from typing import Any, MutableMapping, Sequence
 from urllib.parse import urljoin
 
 from requests import Response, Session
@@ -42,11 +42,17 @@ class ApiClient:
         url = urljoin(self._base_url, route)
         return self._session.get(url, params=params)
 
-    def post(self, route: str, headers: dict | None = None, body=None) -> Response:
+    def post(
+        self,
+        route: str,
+        headers: dict | None = None,
+        body: Any | None = None,
+        json: Any | None = None,
+    ) -> Response:
         if headers:
             self.add_headers(headers)
         url = urljoin(self._base_url, route)
-        return self._session.post(url, data=body)
+        return self._session.post(url, data=body, json=json)
 
     def put(self, route: str, headers: dict | None = None, body=None) -> Response:
         if headers:
@@ -54,8 +60,16 @@ class ApiClient:
         url = urljoin(self._base_url, route)
         return self._session.put(url, data=body)
 
-    def delete(self, route: str, headers: dict | None = None) -> Response:
+    def patch(self, route: str, headers: dict | None = None, body=None) -> Response:
         if headers:
             self.add_headers(headers)
         url = urljoin(self._base_url, route)
-        return self._session.delete(url)
+        return self._session.patch(url, data=body)
+
+    def delete(
+        self, route: str, headers: dict | None = None, **params: dict | None
+    ) -> Response:
+        if headers:
+            self.add_headers(headers)
+        url = urljoin(self._base_url, route)
+        return self._session.delete(url, params=params)

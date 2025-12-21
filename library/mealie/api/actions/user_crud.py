@@ -3,7 +3,7 @@
 import allure
 from requests import Response
 
-from library.api_client import ApiClient
+from library.api.api_client import ApiClient
 from library.mealie.api import routes
 
 

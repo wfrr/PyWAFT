@@ -3,7 +3,7 @@
 import allure
 import pytest
 
-from library.mealie.assertions.common import assert_lists_equal
+from library.assertions.common import assert_lists_equal
 from library.mealie.pages.shopping_lists_page import ShoppingListsPage
 
 

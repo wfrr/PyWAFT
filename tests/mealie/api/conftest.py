@@ -5,11 +5,11 @@ from string import ascii_letters
 
 import pytest
 
-from library.api_client import ApiClient
+from library.api.api_client import ApiClient
+from library.assertions.api import assert_status_code
 from library.core.app_data import AppData
 from library.mealie.api.actions.admin_crud import create_user
 from library.mealie.api.actions.user_auth import auth_user
-from library.mealie.assertions.api import assert_status_code
 from library.mealie.database.queries import select_test_users_id_by_name
 
 
@@ -68,14 +68,12 @@ def test_user_data(admin_authorized_client: ApiClient, stand: AppData) -> list:
     test_users = select_test_users_id_by_name(stand.db)
     if not test_users:
         username = "test_" + "".join(random.choice(ascii_letters) for _ in range(10))
-        body = json.dumps(
-            {
-                "email": f"{username}@test.com",
-                "fullName": "Test",
-                "username": username,
-                "password": "1234567890",
-            }
-        )
+        body = json.dumps({
+            "email": f"{username}@test.com",
+            "fullName": "Test",
+            "username": username,
+            "password": "1234567890",
+        })
         resp = create_user(admin_authorized_client, body=body)
         assert_status_code(resp, HTTPStatus.CREATED)
         return [resp.json()["id"]]

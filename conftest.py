@@ -72,6 +72,7 @@ def stand(variables: dict) -> Generator[AppData, None, None]:
             app=variables["app"],
             db=variables["app"]["db"],
             users=variables["app"]["users"],
+            echoer=variables["echoer"],
         )
     except KeyError as k:
         sys.exit(f"Отсутствует секция {k.args[0]} в файле данных стенда")

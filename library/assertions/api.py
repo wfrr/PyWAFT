@@ -1,5 +1,7 @@
 """Проверки, связанные с API."""
 
+import json
+
 import allure
 from jsonschema import validate
 from requests import Response
@@ -25,3 +27,14 @@ def assert_schema(response: Response, schema) -> None:
     :raises ValidationError: тело ответа не соответствует схеме.
     """
     validate(instance=response.json(), schema=schema)
+
+
+@allure.step("Проверка строки на соответствие схеме")
+def assert_schema_str(value: str, schema) -> None:
+    """Проверка строки на соответствие схеме.
+
+    :param value: строка для проверки
+    :param schema: модель для проверки схемы json
+    :raises ValidationError: тело ответа не соответствует схеме.
+    """
+    validate(instance=json.loads(value), schema=schema)

@@ -10,3 +10,4 @@ class AppData:
     app: dict[str, str]
     db: dict[str, str]
     users: dict[str, dict[str, str]]
+    echoer: dict[str, str]

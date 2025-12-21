@@ -14,6 +14,17 @@ def assert_strings_equal(value: str, exp_value: str, msg: str = ""):
     assert value == exp_value, msg
 
 
+@allure.step("Проверка вхождения строки в другую строку")
+def aseert_string_contains(value: str, exp_value: str, msg: str = ""):
+    """Проверка вхождения строки в другую строку.
+
+    :param str value: значение для сравнения
+    :param str exp_value: ожидаемое значение
+    :param str msg: сообщение об ошибке, значение по умолчанию ""
+    """
+    assert exp_value in value, msg
+
+
 @allure.step("Проверка соответствия числового значения ожидаемому")
 def assert_ints_equal(value: int, exp_value: int, msg: str = ""):
     """Проверка соответствия числового значения ожидаемому.
